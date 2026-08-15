@@ -1,0 +1,32 @@
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 400; font-display: swap; src: url('/assets/fonts/inter-400.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 500; font-display: swap; src: url('/assets/fonts/inter-500.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 600; font-display: swap; src: url('/assets/fonts/inter-600.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 700; font-display: swap; src: url('/assets/fonts/inter-700.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 800; font-display: swap; src: url('/assets/fonts/inter-800.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 900; font-display: swap; src: url('/assets/fonts/inter-900.woff2') format('woff2'); }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background: #f5f7fa;
+    color: #1e293b;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main { flex: 1; }
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* ===== NAVBAR - dihandle di header.blade.php ===== */
+header { position: relative; z-index: 1000; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #0f3b5e; border-radius: 3px; }
