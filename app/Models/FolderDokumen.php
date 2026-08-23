@@ -8,7 +8,7 @@ class FolderDokumen extends Model
 {
     protected $table = 'folder_dokumen';
 
-    protected $fillable = ['nama', 'deskripsi', 'divisi', 'bidang_id', 'status', 'created_by'];
+    protected $fillable = ['nama', 'deskripsi', 'divisi', 'status', 'parent_id', 'created_by'];
 
     public function pembuat()
     {
@@ -20,8 +20,13 @@ class FolderDokumen extends Model
         return $this->hasMany(UploadAnggota::class, 'folder_id');
     }
 
-    public function bidang()
+    public function parent()
     {
-        return $this->belongsTo(Bidang::class);
+        return $this->belongsTo(self::class, 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(self::class, 'parent_id');
     }
 }

@@ -17,6 +17,9 @@
 
             <ul class="nav-menu" id="navMenu">
                 <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}"><i class="fas fa-home"></i> Beranda</a></li>
+                @auth
+                <li><a href="{{ route('anggota.dashboard') }}" class="{{ request()->routeIs('anggota.*') ? 'active' : '' }}"><i class="fas fa-folder-open"></i> Arsip</a></li>
+                @endauth
                 <li><a href="{{ route('surat.create') }}" class="{{ request()->routeIs('surat.create') ? 'active' : '' }}"><i class="fas fa-envelope"></i> Kirim Surat</a></li>
                 <li><a href="{{ route('akip.public') }}" class="{{ request()->routeIs('akip.public') ? 'active' : '' }}"><i class="fas fa-clipboard-check"></i> AKIP</a></li>
                 <li><a href="{{ route('iki.public') }}" class="{{ request()->routeIs('iki.public') ? 'active' : '' }}"><i class="fas fa-user-check"></i> IKI</a></li>
@@ -24,10 +27,17 @@
                 <li><a href="{{ route('capaian.public') }}" class="{{ request()->routeIs('capaian.public') ? 'active' : '' }}"><i class="fas fa-flag-checkered"></i> Capaian Program</a></li>
                 <li><a href="{{ route('monev.public') }}" class="{{ request()->routeIs('monev.public') ? 'active' : '' }}"><i class="fas fa-chart-pie"></i> Monev</a></li>
                 <li>
+                    @auth
+                    <a href="{{ route('logout') }}" class="btn-login-nav">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>{{ auth()->user()->nama_admin }}</span>
+                    </a>
+                    @else
                     <a href="{{ route('login') }}" class="btn-login-nav">
                         <i class="fas fa-arrow-right-to-bracket"></i>
                         <span>Login</span>
                     </a>
+                    @endauth
                 </li>
             </ul>
         </div>
@@ -42,16 +52,17 @@
         left: 0;
         width: 100%;
         z-index: 1000;
-        background: transparent;
+        background: #0f3b5e;
         padding: 12px 0;
-        border-bottom: none;
+        border-bottom: 2px solid #eab308;
+        box-shadow: 0 4px 30px rgba(0,0,0,0.15);
         transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
     }
 
     .navbar.scrolled {
-        background: rgba(15, 59, 94, 0.95);
+        background: #0f3b5e;
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         padding: 8px 0;
@@ -60,7 +71,7 @@
     }
 
     .navbar.always-solid {
-        background: rgba(15, 59, 94, 0.95) !important;
+        background: #0f3b5e !important;
         backdrop-filter: blur(12px) !important;
         -webkit-backdrop-filter: blur(12px) !important;
         padding: 8px 0 !important;
@@ -217,7 +228,7 @@
 
         .navbar.scrolled .nav-menu,
         .navbar.always-solid .nav-menu {
-            background: rgba(15,59,94,0.95);
+            background: #0f3b5e;
         }
 
         .nav-brand .brand-text .brand-name { font-size: 16px; }

@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DokumenAkipController;
 use App\Http\Controllers\Admin\DokumenIkiController;
 use App\Http\Controllers\Admin\FolderDokumenController;
 use App\Http\Controllers\Admin\IkuController;
+use App\Http\Controllers\Admin\LogAktivitasController;
 use App\Http\Controllers\Admin\ManajemenUserController;
 use App\Http\Controllers\Admin\MonevController;
 use App\Http\Controllers\Admin\SliderController;
@@ -55,7 +56,7 @@ Route::get('/reset-password', [AuthController::class, 'resetPassword'])->name('r
 Route::prefix('anggota')->middleware(['role:anggota'])->group(function () {
     Route::get('/', [AnggotaController::class, 'dashboard'])->name('anggota.dashboard');
     Route::post('/upload', [AnggotaController::class, 'store'])->name('anggota.upload');
-    Route::get('/delete/{upload}', [AnggotaController::class, 'destroy'])->name('anggota.delete');
+    Route::get('/download/{upload}', [AnggotaController::class, 'download'])->name('anggota.download');
 });
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['admin'])->name('admin.dashboard');
 
@@ -129,6 +130,12 @@ Route::prefix('admin')->middleware(['role:super_admin,admin_divisi,admin_bidang'
     Route::post('/folder-dokumen', [FolderDokumenController::class, 'store'])->name('admin.folder.store');
     Route::post('/folder-dokumen/{folder}', [FolderDokumenController::class, 'update'])->name('admin.folder.update');
     Route::get('/folder-dokumen/{folder}/delete', [FolderDokumenController::class, 'destroy'])->name('admin.folder.destroy');
+
+    // Upload Anggota (admin lihat) — download
+    Route::get('/upload-anggota/download/{upload}', [UploadAnggotaController::class, 'download'])->name('admin.upload.download');
+
+    // Log Aktivitas (Super Admin)
+    Route::get('/log-aktivitas', [LogAktivitasController::class, 'index'])->name('admin.log.index');
 
     // Kelola Anggota (Admin Bidang)
     Route::get('/anggota', [KelolaAnggotaController::class, 'index'])->name('admin.anggota.index');

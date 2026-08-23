@@ -192,7 +192,13 @@
             </li>
 
             @endif
-
+@if(auth()->user()?->isSuperAdmin())
+            <li>
+                <a href="{{ route('admin.log.index') }}" class="{{ request()->routeIs('admin.log.*') ? 'active' : '' }}">
+                    <i class="fas fa-history"></i><span>Log Aktivitas</span>
+                </a>
+            </li>
+            @endif
             <li class="nav-divider"></li>
             <li>
                 <a href="{{ route('logout') }}" style="color:#ef4444;">
