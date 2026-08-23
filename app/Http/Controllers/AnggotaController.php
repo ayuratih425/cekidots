@@ -21,28 +21,11 @@ class AnggotaController extends Controller
     public function dashboard(Request $request)
     {
         $user = Auth::user();
-<<<<<<< HEAD
 
         $parents = FolderDokumen::with(['uploads.user', 'children.uploads.user'])
             ->whereNull('parent_id')
             ->where($this->folderScope($user))
-=======
-        $folders = FolderDokumen::where('status', 'aktif')
-            ->where(fn ($q) => $q->where('bidang_id', $user->bidang_id)->orWhereNull('bidang_id'))
->>>>>>> fd1683fb08e1dafd358aeaeb27a3fbc12f877618
             ->orderBy('nama')->get();
-
-        $search = trim((string) $request->input('q'));
-        $results = collect();
-
-        if ($search !== '') {
-            $results = UploadAnggota::with(['folder', 'user'])
-                ->whereHas('folder', $this->folderScope($user))
-                ->where(fn ($q) => $q->where('judul', 'like', "%{$search}%")
-                    ->orWhere('keterangan', 'like', "%{$search}%")
-                    ->orWhere('tanggal_upload', 'like', "%{$search}%"))
-                ->orderByDesc('tanggal_upload')->get();
-        }
 
         $uploadSelect = [];
         $total_dokumen = 0;
@@ -58,27 +41,17 @@ class AnggotaController extends Controller
         $total_folder = $parents->count() + $parents->sum(fn ($p) => $p->children->count());
         $dokumen_saya = UploadAnggota::where('user_id', $user->id)->count();
 
-        return view('anggota.dashboard', compact('parents', 'results', 'search', 'uploadSelect', 'total_dokumen', 'total_folder', 'dokumen_saya'));
+        return view('anggota.dashboard', compact('parents', 'uploadSelect', 'total_dokumen', 'total_folder', 'dokumen_saya'));
     }
 
     public function store(Request $request)
     {
         $user = Auth::user();
-<<<<<<< HEAD
-=======
-        $folder = FolderDokumen::where('id', $request->folder_id)
-            ->where(fn ($q) => $q->where('bidang_id', $user->bidang_id)->orWhereNull('bidang_id'))
-            ->firstOrFail();
->>>>>>> fd1683fb08e1dafd358aeaeb27a3fbc12f877618
 
         $request->validate([
             'folder_id' => 'required|exists:folder_dokumen,id',
             'judul' => 'required|string',
-<<<<<<< HEAD
             'file_dokumen' => 'required|file|max:51200|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,jpg,jpeg,png,gif,webp,txt,zip,rar',
-=======
-            'file_dokumen' => 'required|file|max:51200',
->>>>>>> fd1683fb08e1dafd358aeaeb27a3fbc12f877618
             'tanggal_upload' => 'required|date',
         ]);
 
@@ -91,11 +64,7 @@ class AnggotaController extends Controller
 
         $tanggal = Carbon::parse($request->tanggal_upload);
 
-<<<<<<< HEAD
         $upload = UploadAnggota::create([
-=======
-        UploadAnggota::create([
->>>>>>> fd1683fb08e1dafd358aeaeb27a3fbc12f877618
             'user_id' => Auth::id(),
             'folder_id' => $folder->id,
             'judul' => $request->judul,
@@ -107,7 +76,6 @@ class AnggotaController extends Controller
             'bulan' => $tanggal->month,
             'tanggal_upload' => $request->tanggal_upload,
             'status' => 'aktif',
-<<<<<<< HEAD
         ]);
 
         LogAktivitas::create([
@@ -115,8 +83,6 @@ class AnggotaController extends Controller
             'upload_id' => $upload->id,
             'aksi' => 'upload',
             'detail' => $request->judul,
-=======
->>>>>>> fd1683fb08e1dafd358aeaeb27a3fbc12f877618
         ]);
 
         return back()->with('success', 'Dokumen berhasil diupload!');
@@ -124,7 +90,6 @@ class AnggotaController extends Controller
 
     public function download(UploadAnggota $upload)
     {
-<<<<<<< HEAD
         $user = Auth::user();
         $folder = $upload->folder;
         abort_unless($folder && in_array($folder->divisi, [$user->divisi, 'Semua']), 403);
@@ -140,14 +105,5 @@ class AnggotaController extends Controller
             'uploads/anggota/'.$upload->file_name,
             $upload->judul.'.'.$upload->file_type
         );
-=======
-        if ($upload->user_id !== Auth::id()) {
-            abort(403);
-        }
-        Storage::disk('public')->delete('uploads/anggota/'.$upload->file_name);
-        $upload->delete();
-
-        return back()->with('success', 'Dokumen berhasil dihapus!');
->>>>>>> fd1683fb08e1dafd358aeaeb27a3fbc12f877618
     }
 }

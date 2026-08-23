@@ -52,16 +52,17 @@
         left: 0;
         width: 100%;
         z-index: 1000;
-        background: transparent;
+        background: #0f3b5e;
         padding: 12px 0;
-        border-bottom: none;
+        border-bottom: 2px solid #eab308;
+        box-shadow: 0 4px 30px rgba(0,0,0,0.15);
         transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
     }
 
     .navbar.scrolled {
-        background: rgba(15, 59, 94, 0.95);
+        background: #0f3b5e;
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         padding: 8px 0;
@@ -70,7 +71,7 @@
     }
 
     .navbar.always-solid {
-        background: rgba(15, 59, 94, 0.95) !important;
+        background: #0f3b5e !important;
         backdrop-filter: blur(12px) !important;
         -webkit-backdrop-filter: blur(12px) !important;
         padding: 8px 0 !important;
@@ -227,7 +228,7 @@
 
         .navbar.scrolled .nav-menu,
         .navbar.always-solid .nav-menu {
-            background: rgba(15,59,94,0.95);
+            background: #0f3b5e;
         }
 
         .nav-brand .brand-text .brand-name { font-size: 16px; }

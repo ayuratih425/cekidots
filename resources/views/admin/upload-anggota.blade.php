@@ -80,16 +80,11 @@
         <div style="overflow-x:auto;">
         <table class="data-table">
             <thead>
-<<<<<<< HEAD
-                <tr><th>Tanggal</th><th>Nama Anggota</th><th>Divisi</th><th>Folder</th><th>Nama File</th><th>Jenis</th><th>Ukuran</th><th>Tindakan</th></tr>
-=======
-                <tr><th>#</th><th>Tanggal</th><th>Nama Anggota</th><th>Divisi</th><th>Folder</th><th>Judul</th><th style="width:80px;">Aksi</th></tr>
->>>>>>> fd1683fb08e1dafd358aeaeb27a3fbc12f877618
+<tr><th>Tanggal</th><th>Nama Anggota</th><th>Divisi</th><th>Folder</th><th>Nama File</th><th>Jenis</th><th>Ukuran</th><th>Tindakan</th></tr>
             </thead>
             <tbody>
                 @foreach($uploads as $i => $up)
                 <tr>
-<<<<<<< HEAD
                     <td>{{ \Carbon\Carbon::parse($up->tanggal_upload)->format('d/m/Y') }}</td>
                     <td>{{ $up->user->nama_admin ?? '-' }}</td>
                     <td>{{ $up->user->divisi ?? '-' }}</td>
@@ -108,30 +103,6 @@
                 @empty
                 <tr><td colspan="8" class="text-center text-muted">Belum ada dokumen.</td></tr>
                 @endforelse
-=======
-                    <td style="color:#94a3b8; font-size:12px;">{{ $uploads->firstItem() + $i }}</td>
-                    <td style="white-space:nowrap;">{{ \Carbon\Carbon::parse($up->tanggal_upload)->format('d/m/Y') }}</td>
-                    <td style="font-weight:600; color:#0f3b5e;">{{ $up->user->nama_admin ?? '-' }}</td>
-                    <td>
-                        <span style="background:#f0fdf4; color:#166534; padding:2px 10px; border-radius:12px; font-size:11px; border:1px solid #bbf7d0;">{{ $up->user->divisi ?? '-' }}</span>
-                    </td>
-                    <td>
-                        <span style="background:#f1f5f9; color:#475569; padding:2px 10px; border-radius:12px; font-size:11px;">{{ $up->folder->nama ?? '-' }}</span>
-                    </td>
-                    <td style="max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="{{ $up->judul }}">{{ $up->judul }}</td>
-                    <td>
-                        <div style="display:flex; gap:4px;">
-                        <a href="{{ Storage::url('uploads/anggota/' . $up->file_name) }}" target="_blank" class="btn btn-sm btn-info" title="Download">
-                            <i class="fas fa-download"></i>
-                        </a>
-                        <a href="{{ route('admin.upload.destroy', $up->id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Hapus dokumen ini?')" title="Hapus">
-                            <i class="fas fa-trash"></i>
-                        </a>
-                        </div>
-                    </td>
-                </tr>
-                @endforeach
->>>>>>> fd1683fb08e1dafd358aeaeb27a3fbc12f877618
             </tbody>
         </table>
         </div>

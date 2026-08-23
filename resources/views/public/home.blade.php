@@ -7,20 +7,26 @@
     html, body { margin: 0; padding: 0; width: 100%; overflow-x: hidden; }
     .slider-section {
         position: relative;
-        width: 100vw;
-        height: 100vh;
+        width: 100%;
+        height: auto;
         overflow: hidden;
         background: #0f3b5e;
         margin: 0;
         padding: 0;
     }
-    .slider-container { width: 100%; height: 100%; position: relative; }
+    .slider-container { width: 100%; height: auto; position: relative; }
     .slide {
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        position: relative; width: 100%; height: auto;
         opacity: 0; transition: opacity 0.8s ease-in-out; z-index: 1;
+        display: flex; align-items: flex-start; justify-content: center;
+        background: #0f3b5e;
     }
     .slide.active { opacity: 1; z-index: 2; }
-    .slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .slide:not(.active) { display: none; }
+    .slide-main {
+        width: 100%; height: auto; max-width: 100%; max-height: none;
+        object-fit: contain; display: block;
+    }
     .slider-btn {
         position: absolute; top: 50%; transform: translateY(-50%);
         background: rgba(0,0,0,0.4); color: #fff; border: none;
@@ -160,14 +166,12 @@
     .btn-layanan:hover { background: #eab308; color: #0f3b5e; transform: scale(1.02); }
 
     @media (max-width: 992px) {
-        .slider-section { height: 100vh; }
         .layanan-section { padding: 60px 0 70px; min-height: auto; }
         .section-header h2 { font-size: 30px; }
         .layanan-grid { grid-template-columns: repeat(3, 1fr); gap: 18px; padding: 0 16px; }
         .layanan-card { min-height: 240px; padding: 24px 18px 20px; }
     }
     @media (max-width: 768px) {
-        .slider-section { height: 100vh; }
         .slider-btn { padding: 12px 16px; font-size: 16px; }
         .slider-btn.prev { left: 12px; }
         .slider-btn.next { right: 12px; }
@@ -187,7 +191,6 @@
         .btn-layanan { font-size: 12px; padding: 6px 16px; }
     }
     @media (max-width: 480px) {
-        .slider-section { height: 100vh; }
         .slider-btn { padding: 8px 12px; font-size: 14px; }
         .slider-dots .dot { width: 8px; height: 8px; }
         .slider-dots { bottom: 15px; gap: 6px; }
@@ -281,18 +284,18 @@
     <div class="slider-container" id="sliderContainer">
         @if($slides->isEmpty())
         <div class="slide active">
-            <img src="{{ asset('assets/img/slide-1.jpg') }}" alt="Default Slide">
+            <img class="slide-main" src="{{ asset('assets/img/slide-1.jpg') }}" alt="Default Slide">
         </div>
         <div class="slide">
-            <img src="{{ asset('assets/img/slide-2.jpg') }}" alt="Default Slide 2">
+            <img class="slide-main" src="{{ asset('assets/img/slide-2.jpg') }}" alt="Default Slide 2">
         </div>
         <div class="slide">
-            <img src="{{ asset('assets/img/slide-3.jpg') }}" alt="Default Slide 3">
+            <img class="slide-main" src="{{ asset('assets/img/slide-3.jpg') }}" alt="Default Slide 3">
         </div>
         @else
         @foreach($slides as $index => $slide)
         <div class="slide {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}">
-            <img src="{{ asset('assets/img/slider/' . $slide->gambar) }}" alt="{{ $slide->judul }}">
+            <img class="slide-main" src="{{ asset('assets/img/slider/' . $slide->gambar) }}" alt="{{ $slide->judul }}">
         </div>
         @endforeach
         @endif
@@ -468,6 +471,23 @@ document.addEventListener('DOMContentLoaded', function() {
             startAutoPlay();
         });
     });
+
+    var sliderContainer = document.getElementById('sliderContainer');
+    var touchStartX = null;
+    if (sliderContainer) {
+        sliderContainer.addEventListener('touchstart', function(e) {
+            touchStartX = e.touches[0].clientX;
+        }, { passive: true });
+        sliderContainer.addEventListener('touchend', function(e) {
+            if (touchStartX === null) return;
+            var diff = e.changedTouches[0].clientX - touchStartX;
+            touchStartX = null;
+            if (Math.abs(diff) < 40) return;
+            clearInterval(timerId);
+            if (diff < 0) nextSlide(); else prevSlide();
+            startAutoPlay();
+        }, { passive: true });
+    }
 
     startAutoPlay();
 });

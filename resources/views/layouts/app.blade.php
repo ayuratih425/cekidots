@@ -10,7 +10,7 @@
     @yield('styles')
     @stack('styles')
 </head>
-<body class="{{ !request()->routeIs('home') ? 'has-fixed-header' : '' }}">
+<body class="has-fixed-header">
     @include('includes.header')
 
     <main>
