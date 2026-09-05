@@ -254,7 +254,9 @@ class IkuController extends Controller
                 }
             }
             if ($pdrb_adhb_ekraf > 0) {
-                $proporsi_ekraf = ($total_ekraf / ($pdrb_adhb_ekraf * 1000000000)) * 100;
+                // total_ekraf sudah dalam Rupiah, pdrb_adhb_ekraf dalam Miliar Rupiah
+                // konversi pdrb_adhb_ekraf ke Rupiah dulu sebelum bagi
+                $proporsi_ekraf = ($total_ekraf / ($pdrb_adhb_ekraf * 1_000_000_000)) * 100;
                 $proporsi_ekraf = round($proporsi_ekraf, 4);
             }
             $nilai1 = $total_ekraf;
@@ -273,11 +275,12 @@ class IkuController extends Controller
             $nilai2 = $total_mancanegara;
             $hasil = $total_nusantara + $total_mancanegara;
         } else {
+            // Makan Minum: nilai1 = PDRB Akomodasi, nilai2 = PDRB ADHB Sulteng
             if (count($kriteria) >= 2) {
                 $nilai1 = (float) $kriteria[0]['nilai'];
                 $nilai2 = (float) $kriteria[1]['nilai'];
             }
-            if ($nilai2 > 0) {
+            if ($nilai2 > 0 && $nilai1 > 0) {
                 $hasil = ($nilai1 / $nilai2) * 100;
                 $hasil = round($hasil, 4);
             }
@@ -442,7 +445,9 @@ class IkuController extends Controller
                 $koofisien = (float) $koofisien;
                 $nilai_bps = (float) $nilai_bps;
 
-                $jumlah_rp = $nilai_bps * 1000000000;
+                // nilai_bps dalam satuan Miliar Rupiah → konversi ke Rupiah
+                $jumlah_rp = $nilai_bps * 1_000_000_000;
+                // hasil_penjumlahan = kontribusi sektor dalam Rupiah
                 $hasil_penjumlahan = $jumlah_rp * $koofisien;
 
                 IkuEkraf::create([
@@ -544,8 +549,10 @@ class IkuController extends Controller
             $ext = $file->getClientOriginalExtension();
 
             if (in_array($ext, $allowed) && $file->getSize() <= 5 * 1024 * 1024) {
-                Storage::disk('public')->delete('uploads/iku/'.$kategori.'/'.$existing->file_name);
-
+                $existing = IkuInfografis::where('kategori', $kategori)->first();
+                if ($existing && $existing->file_name) {
+                    Storage::disk('public')->delete('uploads/iku/'.$kategori.'/'.$existing->file_name);
+                }
                 $file_name = 'infografis_'.$kategori.'_'.time().'.'.$ext;
                 $file->storeAs('uploads/iku/'.$kategori, $file_name, 'public');
 

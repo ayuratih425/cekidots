@@ -479,7 +479,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if($data_bulanan->isEmpty())
+                                    @if(empty($data_bulanan))
                                     <tr>
                                         <td colspan="12">
                                             <div class="empty-state">
@@ -569,7 +569,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if($data_akumulasi->isEmpty())
+                                    @if(empty($data_akumulasi))
                                     <tr>
                                         <td colspan="12">
                                             <div class="empty-state">
@@ -621,7 +621,7 @@
                         </div>
                     </div>
 
-                    @if(!$data_akumulasi->isEmpty())
+                    @if(!empty($data_akumulasi))
                     <div class="legend-wrapper">
                         <div class="legend-row">
                             <span class="legend-label">Predikat</span>

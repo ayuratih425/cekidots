@@ -3,73 +3,52 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\SuratMasuk;
-use App\Models\Slider;
 use App\Models\DokumenAkip;
 use App\Models\DokumenIki;
-use App\Models\MonevBulanan;
 use App\Models\MonevAkumulasi;
+use App\Models\MonevBulanan;
+use App\Models\Slider;
+use App\Models\SuratMasuk;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $total_surat = SuratMasuk::count();
-        $total_surat_baru = SuratMasuk::where('status', 'baru')->count();
-        $total_slider = Slider::where('status', 'aktif')->count();
-        $total_akip = DokumenAkip::count();
-        $total_iki = DokumenIki::count();
-        
-        $total_monev_bulanan = MonevBulanan::count();
-        $total_monev_akumulasi = MonevAkumulasi::count();
-        
-        $surat_terbaru = SuratMasuk::orderBy('id', 'desc')->limit(5)->get();
-        
-        $aktivitas = [];
-        
-        $surat_aktivitas = SuratMasuk::select(
-            DB::raw("'surat' as type"),
-            'id',
-            DB::raw("CONCAT('Surat baru dari ', asal_instansi) as deskripsi"),
-            'tanggal_masuk as waktu'
-        )->orderBy('id', 'desc')->limit(3)->get();
-        $aktivitas = array_merge($aktivitas, $surat_aktivitas->toArray());
-        
-        $akip_aktivitas = DokumenAkip::select(
-            DB::raw("'akip' as type"),
-            'id',
-            DB::raw("CONCAT('Dokumen AKIP: ', judul) as deskripsi"),
-            'created_at as waktu'
-        )->orderBy('id', 'desc')->limit(2)->get();
-        $aktivitas = array_merge($aktivitas, $akip_aktivitas->toArray());
-        
-        $iki_aktivitas = DokumenIki::select(
-            DB::raw("'iki' as type"),
-            'id',
-            DB::raw("CONCAT('Dokumen IKI: ', judul) as deskripsi"),
-            'created_at as waktu'
-        )->orderBy('id', 'desc')->limit(2)->get();
-        $aktivitas = array_merge($aktivitas, $iki_aktivitas->toArray());
-        
-        $slider_aktivitas = Slider::select(
-            DB::raw("'slider' as type"),
-            'id',
-            DB::raw("CONCAT('Slide: ', judul) as deskripsi"),
-            'created_at as waktu'
-        )->orderBy('id', 'desc')->limit(2)->get();
-        $aktivitas = array_merge($aktivitas, $slider_aktivitas->toArray());
-        
-        usort($aktivitas, function($a, $b) {
-            return strtotime($b['waktu']) - strtotime($a['waktu']);
+        $stats = Cache::remember('dashboard_stats', 300, function () {
+            $row = DB::selectOne("
+                SELECT
+                    (SELECT COUNT(*) FROM surat_masuk) as total_surat,
+                    (SELECT COUNT(*) FROM surat_masuk WHERE status = 'baru') as total_surat_baru,
+                    (SELECT COUNT(*) FROM sliders WHERE status = 'aktif') as total_slider,
+                    (SELECT COUNT(*) FROM dokumen_akip) as total_akip,
+                    (SELECT COUNT(*) FROM dokumen_iki) as total_iki,
+                    (SELECT COUNT(*) FROM monev_bulanan) as total_monev_bulanan,
+                    (SELECT COUNT(*) FROM monev_akumulasi) as total_monev_akumulasi
+            ");
+            return (array) $row;
         });
-        $aktivitas = array_slice($aktivitas, 0, 10);
-        
-        return view('admin.dashboard', compact(
-            'total_surat', 'total_surat_baru', 'total_slider',
-            'total_akip', 'total_iki',
-            'total_monev_bulanan', 'total_monev_akumulasi',
-            'surat_terbaru', 'aktivitas'
-        ));
+
+        $surat_terbaru = SuratMasuk::orderByDesc('id')->limit(5)->get();
+
+        $aktivitas = collect([
+            ...SuratMasuk::orderByDesc('id')->limit(3)->get()->map(fn ($r) => ['type' => 'surat', 'id' => $r->id, 'deskripsi' => 'Surat baru dari '.$r->asal_instansi, 'waktu' => $r->tanggal_masuk]),
+            ...DokumenAkip::orderByDesc('id')->limit(2)->get()->map(fn ($r) => ['type' => 'akip', 'id' => $r->id, 'deskripsi' => 'Dokumen AKIP: '.$r->judul, 'waktu' => $r->created_at]),
+            ...DokumenIki::orderByDesc('id')->limit(2)->get()->map(fn ($r) => ['type' => 'iki', 'id' => $r->id, 'deskripsi' => 'Dokumen IKI: '.$r->judul, 'waktu' => $r->created_at]),
+            ...Slider::orderByDesc('id')->limit(2)->get()->map(fn ($r) => ['type' => 'slider', 'id' => $r->id, 'deskripsi' => 'Slide: '.$r->judul, 'waktu' => $r->created_at]),
+        ])->sortByDesc('waktu')->take(10)->values();
+
+        return view('admin.dashboard', [
+            'total_surat'           => $stats['total_surat'],
+            'total_surat_baru'      => $stats['total_surat_baru'],
+            'total_slider'          => $stats['total_slider'],
+            'total_akip'            => $stats['total_akip'],
+            'total_iki'             => $stats['total_iki'],
+            'total_monev_bulanan'   => $stats['total_monev_bulanan'],
+            'total_monev_akumulasi' => $stats['total_monev_akumulasi'],
+            'surat_terbaru'         => $surat_terbaru,
+            'aktivitas'             => $aktivitas,
+        ]);
     }
 }

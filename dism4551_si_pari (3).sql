@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.3
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Waktu pembuatan: 04 Agu 2026 pada 04.57
--- Versi server: 10.4.32-MariaDB
--- Versi PHP: 8.0.30
+-- Host: localhost:3306
+-- Waktu pembuatan: 23 Agu 2026 pada 17.10
+-- Versi server: 10.11.14-MariaDB-cll-lve
+-- Versi PHP: 8.4.24
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `dism4551_si_pari`
+-- Basis data: `dism4551_si_pari`
 --
 
 -- --------------------------------------------------------
@@ -49,60 +49,60 @@ CREATE TABLE `capaian_program` (
 --
 
 INSERT INTO `capaian_program` (`id`, `program`, `sasaran`, `indikator`, `target`, `realisasi`, `capaian`, `frekwensi`, `sumber_data`, `file_sumber`, `penanggung_jawab`, `tahun`, `created_at`, `updated_at`) VALUES
-(1, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-Rata Lama Kunjungan Wisatawan Mancanegara (Hari)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2025', '2026-07-23 12:16:05', '2026-07-23 12:26:04'),
-(2, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-rata pengeluaran wisatawan mancanegara ($)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2025', '2026-07-23 12:16:05', '2026-07-23 12:26:04'),
-(3, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan mancanegara (ribu perhari)', 0.000000, 0.000000, 0.0000, 'Bulanan / Tahunan', NULL, NULL, 'BIDANG Pemasaran Pariwisata', '2025', '2026-07-23 12:16:05', '2026-07-23 12:26:04'),
-(4, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan mancanegara (juta orang)', 0.000000, 0.000000, 0.0000, 'Bulanan / Tahunan', NULL, NULL, 'BIDANG Pemasaran Pariwisata', '2025', '2026-07-23 12:16:05', '2026-07-23 12:26:04'),
-(5, 'Program Ekonomi Kreatif Melalui Pemanfaatan Dan Perlindungan Hak Kekayaan Intelektual', 'Meningkatnya Proporsi PDRB Ekonomi Kreatif Terhadap ADHB', 'Nilai Tambah Ekonomi Kreatif (Rp)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Ekonomi Kreatif', '2025', '2026-07-23 12:16:05', '2026-07-23 12:26:04'),
-(6, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah tenaga Kerja Pariwisata (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2025', '2026-07-23 12:16:05', '2026-07-23 12:26:04'),
-(7, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja Ekonomi Kreatif (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2025', '2026-07-23 12:16:05', '2026-07-23 12:26:04'),
-(8, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata tersertifikasi (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2025', '2026-07-23 12:16:05', '2026-07-23 12:26:04'),
-(9, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Ekonomi Kreatif tersertifikasi (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2025', '2026-07-23 12:16:05', '2026-07-23 12:26:04'),
-(10, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-Rata Lama Kunjungan Wisatawan Mancanegara (Hari)', 1.500000, 1.570000, 104.6667, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2026', '2026-07-23 12:20:16', '2026-07-23 12:44:31'),
-(11, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-rata pengeluaran wisatawan mancanegara ($)', 600.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2026', '2026-07-23 12:20:16', '2026-07-23 12:20:16'),
-(12, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan mancanegara (ribu perhari)', 28750.000000, 3847.000000, 13.3809, 'Bulanan / Tahunan', 'BPS, Dinas Pariwisata Kab./Kota', NULL, 'BIDANG Pemasaran Pariwisata', '2026', '2026-07-23 12:20:16', '2026-07-23 12:44:31'),
-(13, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan mancanegara (juta orang)', 9925000.000000, 4988167.000000, 50.2586, 'Bulanan / Tahunan', 'BPS, Dinas Pariwisata Kab./Kota', NULL, 'BIDANG Pemasaran Pariwisata', '2026', '2026-07-23 12:20:16', '2026-07-23 12:44:31'),
-(14, 'Program Ekonomi Kreatif Melalui Pemanfaatan Dan Perlindungan Hak Kekayaan Intelektual', 'Meningkatnya Proporsi PDRB Ekonomi Kreatif Terhadap ADHB', 'Nilai Tambah Ekonomi Kreatif (Rp)', 143750000000.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Ekonomi Kreatif', '2026', '2026-07-23 12:20:16', '2026-07-23 12:20:16'),
-(15, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah tenaga Kerja Pariwisata (orang)', 9259.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2026', '2026-07-23 12:20:16', '2026-07-23 12:20:16'),
-(16, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja Ekonomi Kreatif (orang)', 2571.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2026', '2026-07-23 12:20:16', '2026-07-23 12:20:16'),
-(17, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata tersertifikasi (orang)', 200.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2026', '2026-07-23 12:20:16', '2026-07-23 12:20:16'),
-(18, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Ekonomi Kreatif tersertifikasi (orang)', 200.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2026', '2026-07-23 12:20:16', '2026-07-23 12:20:16'),
-(19, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-Rata Lama Kunjungan Wisatawan Mancanegara (Hari)', 3.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2027', '2026-07-23 12:20:17', '2026-07-23 12:20:17'),
-(20, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-rata pengeluaran wisatawan mancanegara ($)', 600.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2027', '2026-07-23 12:20:17', '2026-07-23 12:20:17'),
-(21, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan mancanegara (ribu perhari)', 28750.000000, 3847.000000, 13.3800, 'Bulanan / Tahunan', 'BPS, Dinas Pariwisata Kab./Kota', NULL, 'BIDANG Pemasaran Pariwisata', '2027', '2026-07-23 12:20:17', '2026-07-23 12:20:17'),
-(22, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan mancanegara (juta orang)', 9925000.000000, 4988167.000000, 50.2800, 'Bulanan / Tahunan', 'BPS, Dinas Pariwisata Kab./Kota', NULL, 'BIDANG Pemasaran Pariwisata', '2027', '2026-07-23 12:20:17', '2026-07-23 12:20:17'),
-(23, 'Program Ekonomi Kreatif Melalui Pemanfaatan Dan Perlindungan Hak Kekayaan Intelektual', 'Meningkatnya Proporsi PDRB Ekonomi Kreatif Terhadap ADHB', 'Nilai Tambah Ekonomi Kreatif (Rp)', 143750000000.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Ekonomi Kreatif', '2027', '2026-07-23 12:20:17', '2026-07-23 12:20:17'),
-(24, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah tenaga Kerja Pariwisata (orang)', 9259.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2027', '2026-07-23 12:20:17', '2026-07-23 12:20:17'),
-(25, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja Ekonomi Kreatif (orang)', 2571.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2027', '2026-07-23 12:20:17', '2026-07-23 12:20:17'),
-(26, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata tersertifikasi (orang)', 200.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2027', '2026-07-23 12:20:17', '2026-07-23 12:20:17'),
-(27, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Ekonomi Kreatif tersertifikasi (orang)', 200.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2027', '2026-07-23 12:20:17', '2026-07-23 12:20:17'),
-(28, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-Rata Lama Kunjungan Wisatawan Mancanegara (Hari)', 3.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2028', '2026-07-23 12:20:19', '2026-07-23 12:20:19'),
-(29, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-rata pengeluaran wisatawan mancanegara ($)', 600.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2028', '2026-07-23 12:20:19', '2026-07-23 12:20:19'),
-(30, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan mancanegara (ribu perhari)', 28750.000000, 3847.000000, 13.3800, 'Bulanan / Tahunan', 'BPS, Dinas Pariwisata Kab./Kota', NULL, 'BIDANG Pemasaran Pariwisata', '2028', '2026-07-23 12:20:19', '2026-07-23 12:20:19'),
-(31, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan mancanegara (juta orang)', 9925000.000000, 4988167.000000, 50.2800, 'Bulanan / Tahunan', 'BPS, Dinas Pariwisata Kab./Kota', NULL, 'BIDANG Pemasaran Pariwisata', '2028', '2026-07-23 12:20:19', '2026-07-23 12:20:19'),
-(32, 'Program Ekonomi Kreatif Melalui Pemanfaatan Dan Perlindungan Hak Kekayaan Intelektual', 'Meningkatnya Proporsi PDRB Ekonomi Kreatif Terhadap ADHB', 'Nilai Tambah Ekonomi Kreatif (Rp)', 143750000000.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Ekonomi Kreatif', '2028', '2026-07-23 12:20:19', '2026-07-23 12:20:19'),
-(33, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah tenaga Kerja Pariwisata (orang)', 9259.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2028', '2026-07-23 12:20:19', '2026-07-23 12:20:19'),
-(34, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja Ekonomi Kreatif (orang)', 2571.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2028', '2026-07-23 12:20:19', '2026-07-23 12:20:19'),
-(35, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata tersertifikasi (orang)', 200.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2028', '2026-07-23 12:20:19', '2026-07-23 12:20:19'),
-(36, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Ekonomi Kreatif tersertifikasi (orang)', 200.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2028', '2026-07-23 12:20:19', '2026-07-23 12:20:19'),
-(37, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-Rata Lama Kunjungan Wisatawan Mancanegara (Hari)', 3.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2029', '2026-07-23 12:20:20', '2026-07-23 12:20:20'),
-(38, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-rata pengeluaran wisatawan mancanegara ($)', 600.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2029', '2026-07-23 12:20:20', '2026-07-23 12:20:20'),
-(39, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan mancanegara (ribu perhari)', 28750.000000, 3847.000000, 13.3800, 'Bulanan / Tahunan', 'BPS, Dinas Pariwisata Kab./Kota', NULL, 'BIDANG Pemasaran Pariwisata', '2029', '2026-07-23 12:20:20', '2026-07-23 12:20:20'),
-(40, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan mancanegara (juta orang)', 9925000.000000, 4988167.000000, 50.2800, 'Bulanan / Tahunan', 'BPS, Dinas Pariwisata Kab./Kota', NULL, 'BIDANG Pemasaran Pariwisata', '2029', '2026-07-23 12:20:20', '2026-07-23 12:20:20'),
-(41, 'Program Ekonomi Kreatif Melalui Pemanfaatan Dan Perlindungan Hak Kekayaan Intelektual', 'Meningkatnya Proporsi PDRB Ekonomi Kreatif Terhadap ADHB', 'Nilai Tambah Ekonomi Kreatif (Rp)', 143750000000.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Ekonomi Kreatif', '2029', '2026-07-23 12:20:20', '2026-07-23 12:20:20'),
-(42, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah tenaga Kerja Pariwisata (orang)', 9259.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2029', '2026-07-23 12:20:20', '2026-07-23 12:20:20'),
-(43, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja Ekonomi Kreatif (orang)', 2571.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2029', '2026-07-23 12:20:20', '2026-07-23 12:20:20'),
-(44, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata tersertifikasi (orang)', 200.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2029', '2026-07-23 12:20:20', '2026-07-23 12:20:20'),
-(45, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Ekonomi Kreatif tersertifikasi (orang)', 200.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2029', '2026-07-23 12:20:20', '2026-07-23 12:20:20'),
-(46, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-Rata Lama Kunjungan Wisatawan Mancanegara (Hari)', 3.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2030', '2026-07-23 12:20:21', '2026-07-23 12:20:21'),
-(47, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-rata pengeluaran wisatawan mancanegara ($)', 600.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2030', '2026-07-23 12:20:21', '2026-07-23 12:20:21'),
-(48, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan mancanegara (ribu perhari)', 28750.000000, 3847.000000, 13.3800, 'Bulanan / Tahunan', 'BPS, Dinas Pariwisata Kab./Kota', NULL, 'BIDANG Pemasaran Pariwisata', '2030', '2026-07-23 12:20:21', '2026-07-23 12:20:21'),
-(49, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan mancanegara (juta orang)', 9925000.000000, 4988167.000000, 50.2800, 'Bulanan / Tahunan', 'BPS, Dinas Pariwisata Kab./Kota', NULL, 'BIDANG Pemasaran Pariwisata', '2030', '2026-07-23 12:20:21', '2026-07-23 12:20:21'),
-(50, 'Program Ekonomi Kreatif Melalui Pemanfaatan Dan Perlindungan Hak Kekayaan Intelektual', 'Meningkatnya Proporsi PDRB Ekonomi Kreatif Terhadap ADHB', 'Nilai Tambah Ekonomi Kreatif (Rp)', 143750000000.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Ekonomi Kreatif', '2030', '2026-07-23 12:20:21', '2026-07-23 12:20:21'),
-(51, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah tenaga Kerja Pariwisata (orang)', 9259.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2030', '2026-07-23 12:20:21', '2026-07-23 12:20:21'),
-(52, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja Ekonomi Kreatif (orang)', 2571.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2030', '2026-07-23 12:20:21', '2026-07-23 12:20:21'),
-(53, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata tersertifikasi (orang)', 200.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2030', '2026-07-23 12:20:21', '2026-07-23 12:20:21'),
-(54, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Ekonomi Kreatif tersertifikasi (orang)', 200.000000, 0.000000, 0.0000, 'Tahunan', 'BPS', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2030', '2026-07-23 12:20:21', '2026-07-23 12:20:21');
+(1, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-Rata Lama Kunjungan Wisatawan Mancanegara (Hari)', 2.500000, 1.510000, 60.4000, 'Tahunan', 'https://sulteng.bps.go.id/id/publication/2025/02/28/d99fa9772e3aac88cb25e6a8/provinsi-sulawesi-tengah-dalam-angka-2025.html', NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2025', '2026-07-23 11:18:04', '2026-08-19 05:48:18'),
+(2, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-rata pengeluaran wisatawan mancanegara ($)', 500.000000, 447.120000, 89.4240, 'Tahunan', 'https://sulteng.bps.go.id/id/publication/2025/02/28/d99fa9772e3aac88cb25e6a8/provinsi-sulawesi-tengah-dalam-angka-2025.html', NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2025', '2026-07-23 11:18:04', '2026-07-28 14:13:08'),
+(3, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan Mancanegara (ribu perhari)', 25000.000000, 28165.000000, 112.6600, 'Bulanan / Tahunan', 'https://sulteng.bps.go.id/id/publication/2025/02/28/d99fa9772e3aac88cb25e6a8/provinsi-sulawesi-tengah-dalam-angka-2025.html', NULL, 'BIDANG Pemasaran Pariwisata', '2025', '2026-07-23 11:18:04', '2026-07-28 14:13:08'),
+(4, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan Nusantara (juta orang)', 9000000.000000, 11668000.000000, 129.6444, 'Bulanan / Tahunan', 'https://sulteng.bps.go.id/id/publication/2025/02/28/d99fa9772e3aac88cb25e6a8/provinsi-sulawesi-tengah-dalam-angka-2025.html', NULL, 'BIDANG Pemasaran Pariwisata', '2025', '2026-07-23 11:18:04', '2026-07-28 14:13:08'),
+(5, 'Program Ekonomi Kreatif Melalui Pemanfaatan Dan Perlindungan Hak Kekayaan Intelektual', 'Meningkatnya Proporsi PDRB Ekonomi Kreatif Terhadap ADHB', 'Nilai Tambah Ekonomi Kreatif (Rp)', 150.000000, 13281.700000, 8854.4667, 'Tahunan', 'https://sulteng.bps.go.id/id/publication/2025/02/28/d99fa9772e3aac88cb25e6a8/provinsi-sulawesi-tengah-dalam-angka-2025.html', NULL, 'BIDANG Pengembangan Ekonomi Kreatif', '2025', '2026-07-23 11:18:04', '2026-08-19 05:47:58'),
+(6, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah tenaga Kerja Pariwisata (orang)', 8418.000000, 84570.000000, 1004.6329, 'Tahunan', 'https://sulteng.bps.go.id/id/pressrelease/2025/11/05/1394/agustus-2025--tingkat-pengangguran-terbuka--tpt--sebesar-2-92-persen--tingkat-partisipasi-angkatan-kerja--tpak--sebesar-72-40-persen.html', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2025', '2026-07-23 11:18:04', '2026-08-18 13:38:10'),
+(7, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja Ekonomi Kreatif (orang)', 2338.000000, 2919.000000, 124.8503, 'Tahunan', 'https://drive.google.com/file/d/18gCxgfLZPxH9FnIhcS9WenZbWrf6A5qe/view?usp=sharing', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2025', '2026-07-23 11:18:04', '2026-07-25 18:11:51'),
+(8, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata tersertifikasi (orang)', 100.000000, 60.000000, 60.0000, 'Tahunan', 'https://www.pariwisata.sultengprov.go.id/images/2026/04SDM/REKAP_PELATIHAN_DAN_SERTIFIKASI_PAREKRAF_SULTENG.pdf', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2025', '2026-07-23 11:18:04', '2026-07-23 11:54:52'),
+(9, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Ekonomi Kreatif tersertifikasi (orang)', 100.000000, 61.000000, 61.0000, 'Tahunan', 'https://www.pariwisata.sultengprov.go.id/images/2026/04SDM/REKAP_PELATIHAN_DAN_SERTIFIKASI_PAREKRAF_SULTENG.pdf', NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2025', '2026-07-23 11:18:04', '2026-07-23 11:54:52'),
+(10, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-Rata Lama Kunjungan Wisatawan Mancanegara (Hari)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2026', '2026-07-23 11:46:40', '2026-07-23 11:46:44'),
+(11, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-rata pengeluaran wisatawan mancanegara ($)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2026', '2026-07-23 11:46:40', '2026-07-23 11:46:44'),
+(12, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan mancanegara (ribu perhari)', 0.000000, 0.000000, 0.0000, 'Bulanan / Tahunan', NULL, NULL, 'BIDANG Pemasaran Pariwisata', '2026', '2026-07-23 11:46:40', '2026-07-23 11:46:44'),
+(13, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan mancanegara (juta orang)', 0.000000, 0.000000, 0.0000, 'Bulanan / Tahunan', NULL, NULL, 'BIDANG Pemasaran Pariwisata', '2026', '2026-07-23 11:46:40', '2026-07-23 11:46:44'),
+(14, 'Program Ekonomi Kreatif Melalui Pemanfaatan Dan Perlindungan Hak Kekayaan Intelektual', 'Meningkatnya Proporsi PDRB Ekonomi Kreatif Terhadap ADHB', 'Nilai Tambah Ekonomi Kreatif (Rp)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Ekonomi Kreatif', '2026', '2026-07-23 11:46:40', '2026-07-23 11:46:44'),
+(15, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah tenaga Kerja Pariwisata (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2026', '2026-07-23 11:46:40', '2026-07-23 11:46:44'),
+(16, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja Ekonomi Kreatif (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2026', '2026-07-23 11:46:40', '2026-07-23 11:46:44'),
+(17, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata tersertifikasi (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2026', '2026-07-23 11:46:40', '2026-07-23 11:46:44'),
+(18, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Ekonomi Kreatif tersertifikasi (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2026', '2026-07-23 11:46:40', '2026-07-23 11:46:44'),
+(19, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-Rata Lama Kunjungan Wisatawan Mancanegara (Hari)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2027', '2026-07-23 11:46:46', '2026-07-23 11:46:52'),
+(20, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-rata pengeluaran wisatawan mancanegara ($)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2027', '2026-07-23 11:46:46', '2026-07-23 11:46:52'),
+(21, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan mancanegara (ribu perhari)', 0.000000, 0.000000, 0.0000, 'Bulanan / Tahunan', NULL, NULL, 'BIDANG Pemasaran Pariwisata', '2027', '2026-07-23 11:46:46', '2026-07-23 11:46:52'),
+(22, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan mancanegara (juta orang)', 0.000000, 0.000000, 0.0000, 'Bulanan / Tahunan', NULL, NULL, 'BIDANG Pemasaran Pariwisata', '2027', '2026-07-23 11:46:46', '2026-07-23 11:46:52'),
+(23, 'Program Ekonomi Kreatif Melalui Pemanfaatan Dan Perlindungan Hak Kekayaan Intelektual', 'Meningkatnya Proporsi PDRB Ekonomi Kreatif Terhadap ADHB', 'Nilai Tambah Ekonomi Kreatif (Rp)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Ekonomi Kreatif', '2027', '2026-07-23 11:46:46', '2026-07-23 11:46:52'),
+(24, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah tenaga Kerja Pariwisata (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2027', '2026-07-23 11:46:46', '2026-07-23 11:46:52'),
+(25, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja Ekonomi Kreatif (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2027', '2026-07-23 11:46:46', '2026-07-23 11:46:52'),
+(26, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata tersertifikasi (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2027', '2026-07-23 11:46:46', '2026-07-23 11:46:52'),
+(27, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Ekonomi Kreatif tersertifikasi (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2027', '2026-07-23 11:46:46', '2026-07-23 11:46:52'),
+(28, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-Rata Lama Kunjungan Wisatawan Mancanegara (Hari)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2028', '2026-07-23 11:46:54', '2026-07-23 11:46:58'),
+(29, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-rata pengeluaran wisatawan mancanegara ($)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2028', '2026-07-23 11:46:54', '2026-07-23 11:46:58'),
+(30, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan mancanegara (ribu perhari)', 0.000000, 0.000000, 0.0000, 'Bulanan / Tahunan', NULL, NULL, 'BIDANG Pemasaran Pariwisata', '2028', '2026-07-23 11:46:54', '2026-07-23 11:46:58'),
+(31, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan mancanegara (juta orang)', 0.000000, 0.000000, 0.0000, 'Bulanan / Tahunan', NULL, NULL, 'BIDANG Pemasaran Pariwisata', '2028', '2026-07-23 11:46:54', '2026-07-23 11:46:58'),
+(32, 'Program Ekonomi Kreatif Melalui Pemanfaatan Dan Perlindungan Hak Kekayaan Intelektual', 'Meningkatnya Proporsi PDRB Ekonomi Kreatif Terhadap ADHB', 'Nilai Tambah Ekonomi Kreatif (Rp)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Ekonomi Kreatif', '2028', '2026-07-23 11:46:54', '2026-07-23 11:46:58'),
+(33, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah tenaga Kerja Pariwisata (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2028', '2026-07-23 11:46:54', '2026-07-23 11:46:58'),
+(34, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja Ekonomi Kreatif (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2028', '2026-07-23 11:46:54', '2026-07-23 11:46:58'),
+(35, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata tersertifikasi (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2028', '2026-07-23 11:46:54', '2026-07-23 11:46:58'),
+(36, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Ekonomi Kreatif tersertifikasi (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2028', '2026-07-23 11:46:54', '2026-07-23 11:46:58'),
+(37, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-Rata Lama Kunjungan Wisatawan Mancanegara (Hari)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2029', '2026-07-23 11:47:00', '2026-07-23 11:47:03'),
+(38, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-rata pengeluaran wisatawan mancanegara ($)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2029', '2026-07-23 11:47:00', '2026-07-23 11:47:03'),
+(39, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan mancanegara (ribu perhari)', 0.000000, 0.000000, 0.0000, 'Bulanan / Tahunan', NULL, NULL, 'BIDANG Pemasaran Pariwisata', '2029', '2026-07-23 11:47:00', '2026-07-23 11:47:03'),
+(40, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan mancanegara (juta orang)', 0.000000, 0.000000, 0.0000, 'Bulanan / Tahunan', NULL, NULL, 'BIDANG Pemasaran Pariwisata', '2029', '2026-07-23 11:47:00', '2026-07-23 11:47:03'),
+(41, 'Program Ekonomi Kreatif Melalui Pemanfaatan Dan Perlindungan Hak Kekayaan Intelektual', 'Meningkatnya Proporsi PDRB Ekonomi Kreatif Terhadap ADHB', 'Nilai Tambah Ekonomi Kreatif (Rp)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Ekonomi Kreatif', '2029', '2026-07-23 11:47:00', '2026-07-23 11:47:03'),
+(42, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah tenaga Kerja Pariwisata (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2029', '2026-07-23 11:47:00', '2026-07-23 11:47:03'),
+(43, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja Ekonomi Kreatif (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2029', '2026-07-23 11:47:00', '2026-07-23 11:47:03'),
+(44, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata tersertifikasi (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2029', '2026-07-23 11:47:00', '2026-07-23 11:47:03'),
+(45, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Ekonomi Kreatif tersertifikasi (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2029', '2026-07-23 11:47:00', '2026-07-23 11:47:03'),
+(46, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-Rata Lama Kunjungan Wisatawan Mancanegara (Hari)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2030', '2026-07-23 11:47:05', '2026-07-23 11:47:08'),
+(47, 'Program Pengembangan Destinasi Pariwisata', 'Meningkatnya Rasio PDRB Penyediaan Akomodasi Makan Minum', 'Rata-rata pengeluaran wisatawan mancanegara ($)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Destinasi Pariwisata', '2030', '2026-07-23 11:47:05', '2026-07-23 11:47:08'),
+(48, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan mancanegara (ribu perhari)', 0.000000, 0.000000, 0.0000, 'Bulanan / Tahunan', NULL, NULL, 'BIDANG Pemasaran Pariwisata', '2030', '2026-07-23 11:47:05', '2026-07-23 11:47:08'),
+(49, 'Program Pemasaran Pariwisata', 'Meningkatnya Jumlah Kunjungan Wisatawan Mancanegara', 'Jumlah pergerakan wisatawan mancanegara (juta orang)', 0.000000, 0.000000, 0.0000, 'Bulanan / Tahunan', NULL, NULL, 'BIDANG Pemasaran Pariwisata', '2030', '2026-07-23 11:47:05', '2026-07-23 11:47:08'),
+(50, 'Program Ekonomi Kreatif Melalui Pemanfaatan Dan Perlindungan Hak Kekayaan Intelektual', 'Meningkatnya Proporsi PDRB Ekonomi Kreatif Terhadap ADHB', 'Nilai Tambah Ekonomi Kreatif (Rp)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Ekonomi Kreatif', '2030', '2026-07-23 11:47:05', '2026-07-23 11:47:08'),
+(51, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah tenaga Kerja Pariwisata (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2030', '2026-07-23 11:47:05', '2026-07-23 11:47:08'),
+(52, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja Ekonomi Kreatif (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2030', '2026-07-23 11:47:05', '2026-07-23 11:47:08'),
+(53, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata tersertifikasi (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2030', '2026-07-23 11:47:05', '2026-07-23 11:47:08'),
+(54, 'Program Pengembangan Sumber Daya Pariwisata dan Ekraf', 'Meningkatnya Jumlah Tenaga Kerja/Pelaku Usaha Pariwisata dan Ekonomi Kreatif tersertifikasi', 'Jumlah Tenaga Kerja/Pelaku Usaha Ekonomi Kreatif tersertifikasi (orang)', 0.000000, 0.000000, 0.0000, 'Tahunan', NULL, NULL, 'BIDANG Pengembangan Sumber Daya Pariwisata dan Ekraf', '2030', '2026-07-23 11:47:05', '2026-07-23 11:47:08');
 
 -- --------------------------------------------------------
 
@@ -130,17 +130,27 @@ CREATE TABLE `dokumen_akip` (
 --
 
 INSERT INTO `dokumen_akip` (`id`, `judul`, `deskripsi`, `file_dokumen`, `tipe_konten`, `link_url`, `file_type`, `file_size`, `tahun`, `urutan`, `status`, `created_at`) VALUES
-(9, 'RENSTRA 2025-2029', '', '1784601893_1784528533_RENSTRARevisiDISPAR2025-2029.pdf', 'file', '', 'pdf', 7437028, '2026', 1, 'aktif', '2026-07-21 10:44:53'),
-(10, 'RENJA 2026 (AWAL)', '', '1784601986_1784528635_DISPARRENJA2026v3.pdf', 'file', '', 'pdf', 6185433, '2026', 2, 'aktif', '2026-07-21 10:46:26'),
-(11, 'SK INDIKATOR KINERJA UTAMA 2026', '', '1784602037_1784529825_SKIKU.pdf', 'file', '', 'pdf', 494113, '2026', 3, 'aktif', '2026-07-21 10:47:17'),
-(12, 'DPA 2026 (AWAL)', '', '1784602073_1784546347_01DPAPenetapan-09Januari.rar', 'file', '', 'rar', 3913918, '2026', 4, 'aktif', '2026-07-21 10:47:53'),
-(13, 'SK DEFINISI OPERASIONAL 2026', '', '1784602105_1784595011_SKDOIKUPROGAMDANKEGIATANDISPAR2026v2.pdf', 'file', '', 'pdf', 2400684, '2026', 5, 'aktif', '2026-07-21 10:48:25'),
-(14, 'STRUKTUR ORGANISASI DAN TUGAS POKOK', '', '1784602136_1784547324_StrukturOrganisasidanTugasFungsiDinasPariwisata.pdf', 'file', '', 'pdf', 3507468, '2026', 6, 'aktif', '2026-07-21 10:48:56'),
-(15, 'RENCANA AKSI 2026', '', '1784602192_1784547441_DISPARRENCANAAKSITAHUN2026v3.pdf', 'file', '', 'pdf', 114317, '2026', 7, 'aktif', '2026-07-21 10:49:52'),
-(16, 'POHON KINERJA', '', '1784602217_1784548019_Pohon_Kinerja.pdf', 'file', '', 'pdf', 225851, '2026', 8, 'aktif', '2026-07-21 10:50:17'),
-(17, 'CASCADING', '', '1784602239_1784548272_CASCADING.pdf', 'file', '', 'pdf', 2603292, '2026', 9, 'aktif', '2026-07-21 10:50:39'),
-(18, 'CROSSCUTTING', '', '1784602268_1784552400_Cross-Cutting-Dinas-Pariwisata.pdf', 'file', '', 'pdf', 213701, '2026', 10, 'aktif', '2026-07-21 10:51:08'),
-(20, 'PERJANJIAN KINERJA 2026 (AWAL)', '', '1784604355_PK2026DISPARv3.pdf', 'file', '', 'pdf', 14489074, '2026', 11, 'aktif', '2026-07-21 11:25:55');
+(5, 'RENSTRA 2025-2029', 'Rencana Strategis', '1784528533_RENSTRARevisiDISPAR2025-2029.pdf', 'file', NULL, NULL, NULL, '2026', 1, 'aktif', '2026-07-20 13:22:13'),
+(6, 'RENJA 2026 (AWAL)', 'Rencana Kerja', '1784528635_DISPARRENJA2026v3.pdf', 'file', NULL, NULL, NULL, '2026', 2, 'aktif', '2026-07-20 13:23:55'),
+(7, 'SK INDIKATOR KINERJA UTAMA 2026', 'Surat Keputusan', '1784529825_SKIKU.pdf', 'file', NULL, '', 0, '2026', 3, 'aktif', '2026-07-20 13:43:45'),
+(9, 'DPA 2026 (AWAL)', '', '1784546347_01DPAPenetapan-09Januari.rar', 'file', '', 'rar', 3913918, '2026', 4, 'aktif', '2026-07-20 18:19:07'),
+(10, 'SK DEFINISI OPERASIONAL 2026', '', '1784595011_SKDOIKUPROGAMDANKEGIATANDISPAR2026v2.pdf', 'file', NULL, 'pdf', 2400684, '2026', 5, 'aktif', '2026-07-20 18:33:58'),
+(11, 'STRUKTUR ORGANISASI DAN TUGAS POKOK', '', '1784547324_StrukturOrganisasidanTugasFungsiDinasPariwisata.pdf', 'file', '', 'pdf', 3507468, '2026', 6, 'aktif', '2026-07-20 18:35:24'),
+(12, 'RENCANA AKSI 2026', '', '1784547441_DISPARRENCANAAKSITAHUN2026v3.pdf', 'file', '', 'pdf', 114317, '2026', 7, 'aktif', '2026-07-20 18:37:21'),
+(13, 'POHON KINERJA', '', '1784548019_Pohon_Kinerja.pdf', 'file', '', 'pdf', 225851, '2026', 8, 'aktif', '2026-07-20 18:46:59'),
+(14, 'CASCADING', '', '1784548272_CASCADING.pdf', 'file', '', 'pdf', 2603292, '2026', 9, 'aktif', '2026-07-20 18:51:12'),
+(16, 'CROSSCUTING', '', '1784552400_Cross-Cutting-Dinas-Pariwisata.pdf', 'file', '', 'pdf', 213701, '2026', 10, 'aktif', '2026-07-20 20:00:00'),
+(17, 'PERJANJIAN KINERJA 2026 (AWAL)', '', '1784604361_PK2026DISPARv3.pdf', 'file', '', 'pdf', 14489074, '2026', 11, 'aktif', '2026-07-21 10:26:01'),
+(18, 'SK TIM KERJA', '', '1784604976_SKTimKerjaDinasPariwisata-digabungkan.pdf', 'file', '', 'pdf', 446280, '2026', 12, 'aktif', '2026-07-21 10:36:16'),
+(19, 'SKP PEGAWAI', 'Sasaran kinerja pegawai', '', 'link', 'https://drive.google.com/drive/folders/1Zv4f4zGToAsPaAt2NBRcMs5XxAxehJ36?usp=drive_link', '', 0, '2026', 13, 'aktif', '2026-07-21 10:40:38'),
+(20, 'LAKIP TAHUN 2025', 'Laporan Kinerja', '1784605349_DISPAR-Lakip2025LKJrevisi7.pdf', 'file', '', 'pdf', 2275225, '2026', 14, 'aktif', '2026-07-21 10:42:29'),
+(21, 'SK PEDOMAN', '', '1784606841_wallpaperwhite.jpg', 'file', '', 'jpg', 24809, '2026', 15, 'aktif', '2026-07-21 11:07:21'),
+(22, 'RENCANA TINDAK LANJUT HASIL EVALUASI AKIP TAHUN 2025', '', '1784607353_wallpaperwhite.jpg', 'file', '', 'jpg', 24809, '2026', 16, 'aktif', '2026-07-21 11:15:53'),
+(23, 'EVALUASI RENCANA AKSI TAHUN 2026', '', '', 'link', 'https://drive.google.com/drive/folders/1tJo_kSumGMJPAoo72CdsdaqXpGb_eBkG?usp=drive_link', '', 0, '2026', 17, 'aktif', '2026-07-21 11:17:34'),
+(25, 'SCREENSHOOT RENSTRA, RENJA, DPA, LAKIP, PK PADA WEBSITE DINAS', '', '1784607779_screenshotwebdokperencanaan.jpg', 'file', '', 'jpg', 91398, '2026', 19, 'aktif', '2026-07-21 11:22:59'),
+(27, 'PENGUMPULAN DAN PENGUKURAN CAPAIAN KINERJA APLIKASI CEKIDOT', '', 'https://www.cekidot.dispar.my.id', 'link', 'https://www.cekidot.dispar.my.id', '', 0, '2026', 20, 'aktif', '2026-07-21 11:33:38'),
+(28, 'KONITMEN DAN KETERLIBATAN PIMPINAN DALAM PROSES EVALUASI, PERBAIKAN AKIP,PERBAIKAN DOKUMEN KINERJA', '', '1784612521_wallpaperwhite.jpg', 'file', '', 'jpg', 24809, '2026', 21, 'aktif', '2026-07-21 12:42:01'),
+(29, 'KONITMEN DAN KETERLIBATAN PIMPINAN DALAM PROSES EVALUASI, PERBAIKAN AKIP,PERBAIKAN DOKUMEN KINERJA', '', '1784614114_wallpaperwhite.jpg', 'file', '', 'jpg', 24809, '2026', 22, 'aktif', '2026-07-21 13:08:34');
 
 -- --------------------------------------------------------
 
@@ -168,7 +178,20 @@ CREATE TABLE `dokumen_iki` (
 --
 
 INSERT INTO `dokumen_iki` (`id`, `judul`, `deskripsi`, `file_dokumen`, `tipe_konten`, `link_url`, `file_type`, `file_size`, `tahun`, `urutan`, `status`, `created_at`) VALUES
-(1, 'MPH KADIS', 'Matriks Penilaian Hasil', '1784554204_MPHKadis.pdf', 'file', NULL, 'pdf', 713262, '2026', 1, 'aktif', '2026-07-20 21:30:05');
+(1, 'MPH KADIS', 'Matriks Penilaian Peran Hasil', '1784554649_MPHKadis.pdf', 'file', '', 'pdf', 713262, '2026', 1, 'aktif', '2026-07-20 20:37:29'),
+(2, 'RENCANA AKSI KADIS', '', '1784554772_RencanaAksiKadis.pdf', 'file', '', 'pdf', 764199, '2026', 2, 'aktif', '2026-07-20 20:39:32'),
+(3, 'SKP KADIS', 'Sasaran Kinerja Pegawai', '1785130721_SKPIBUKADIS.pdf', 'file', NULL, 'pdf', 172445, '2026', 3, 'aktif', '2026-07-27 12:38:41'),
+(4, 'MPH KABID', 'Matriks Penilaian Peran Hasil', '1785130889_MPHKABID.pdf', 'file', NULL, 'pdf', 53928, '2026', 4, 'aktif', '2026-07-27 12:41:29'),
+(5, 'RENCANA AKSI KABID', '', '1785131028_RencanaAksiAktivitasKABID.pdf', 'file', '', 'pdf', 54134, '2026', 5, 'aktif', '2026-07-27 12:43:48'),
+(6, 'SKP KABID', 'Sasaran Kinerja Pegawai', '1785131214_SKPKABID2026TTD.pdf', 'file', NULL, 'pdf', 247781, '2026', 6, 'aktif', '2026-07-27 12:46:54'),
+(7, 'MPH MAX', 'Matriks Penilaian Peran Hasil', '1785131369_MPHMAX.pdf', 'file', NULL, 'pdf', 42037, '2026', 7, 'aktif', '2026-07-27 12:49:29'),
+(8, 'RENCANA AKSI MAX', '', '1785131466_RencanaAksiAktivitasMAX.pdf', 'file', '', 'pdf', 42363, '2026', 8, 'aktif', '2026-07-27 12:51:06'),
+(9, 'SKP MAX', 'Sasaran Kinerja Pegawai', '1785131597_SKPMAX2026TTD.pdf', 'file', NULL, 'pdf', 667163, '2026', 9, 'aktif', '2026-07-27 12:53:17'),
+(10, 'MPH SUTRISNI', 'Matriks Penilaian Peran Hasil', '1785131840_SKPSATRISNI2026TTD.pdf', 'file', NULL, 'pdf', 279821, '2026', 10, 'aktif', '2026-07-27 12:57:20'),
+(11, 'RENCANA AKSI SUTRISNI', '', '1785131957_RencanaAksiAktivitasSATRISNI.pdf', 'file', '', 'pdf', 104607, '2026', 11, 'aktif', '2026-07-27 12:59:17'),
+(12, 'SKP NOVIRA', 'Sasaran Kinerja Pegawai', '1785132106_SKPNOVIRA2026TTD.pdf', 'file', NULL, 'pdf', 269851, '2026', 12, 'aktif', '2026-07-27 13:01:46'),
+(13, 'SKP YENNY', 'Sasaran Kinerja Pegawai', '1785132131_SKPYENNI2026TTD.pdf', 'file', NULL, 'pdf', 277545, '2026', 13, 'aktif', '2026-07-27 13:02:11'),
+(14, 'SK TIM KERJA', 'Surat Keputusan', '1785198604_SKTimKerjaDinasPariwisata.pdf', 'file', '', 'pdf', 446280, '2026', 14, 'aktif', '2026-07-28 07:30:04');
 
 -- --------------------------------------------------------
 
@@ -254,7 +277,7 @@ CREATE TABLE `iku_pdrb` (
 INSERT INTO `iku_pdrb` (`id`, `kategori`, `target`, `realitas`, `capaian`, `created_at`, `updated_at`, `tahun`) VALUES
 (1, 'Makan Minum', 0.34, 0.31, 91.84, '2026-07-07 19:24:02', '2026-07-16 15:34:55', '2025'),
 (2, 'Ekraf', 3.76, 0.00, 0.00, '2026-07-08 15:19:25', '2026-07-19 00:49:25', '2025'),
-(3, 'Wisatawan', 25000.00, 28165.00, 112.66, '2026-07-13 03:10:56', '2026-07-27 12:41:37', '2025'),
+(3, 'Wisatawan', 25000.00, 28165.00, 112.66, '2026-07-13 03:10:56', '2026-07-19 00:53:09', '2025'),
 (4, 'Makan Minum', 0.00, 0.00, 0.00, '2026-07-13 15:55:54', '2026-07-13 16:03:04', '2026'),
 (6, 'Wisatawan', 0.00, 0.00, 0.00, '2026-07-13 15:56:13', '2026-07-13 15:56:13', '2026'),
 (7, 'Makan Minum', 0.00, 0.00, 0.00, '2026-07-13 16:02:56', '2026-07-13 16:02:56', '2027'),
@@ -523,8 +546,8 @@ CREATE TABLE `monev_akumulasi` (
 --
 
 INSERT INTO `monev_akumulasi` (`id`, `tahun`, `sub_kegiatan`, `indikator`, `target_ik`, `target_keu`, `realisasi_ik`, `realisasi_keu`, `capaian_ik`, `capaian_keu`, `predikat_ik`, `predikat_keu`, `status`, `status_ik`, `status_keu`, `created_at`, `updated_at`) VALUES
-(15, '2025', '-', '-', 312180.00, 2000000.00, 392810.00, 839120.00, 125.83, 41.96, 'ISTIMEWA', 'ISTIMEWA', 'Efisien', NULL, NULL, '2026-07-29 02:04:08', '2026-07-29 02:04:08'),
-(16, '2025', '-', '-', 217389.00, 738927.00, 3878.00, 798237.00, 1.78, 108.03, 'ISTIMEWA', 'ISTIMEWA', 'Tidak Efisien', NULL, NULL, '2026-07-29 02:04:08', '2026-07-29 02:04:08');
+(6, '2025', '-', '-', 2.00, 2000000.00, 1.00, 1200000.00, 50.00, 60.00, 'KURANG', 'BUTUH PERBAIKAN', 'Tidak Efisien', NULL, NULL, '2026-07-29 01:08:43', '2026-07-29 01:08:43'),
+(7, '2025', '-', '-', 2.00, 2000000.00, 1.00, 900000.00, 50.00, 45.00, 'KURANG', 'KURANG', 'Efisien', NULL, NULL, '2026-07-29 01:08:43', '2026-07-29 01:08:43');
 
 -- --------------------------------------------------------
 
@@ -571,8 +594,8 @@ CREATE TABLE `monev_bulanan` (
 --
 
 INSERT INTO `monev_bulanan` (`id`, `tahun`, `bulan`, `sub_kegiatan`, `indikator`, `target_ik`, `target_keu`, `realisasi_ik`, `realisasi_keu`, `capaian_ik`, `capaian_keu`, `sumber_data`, `faktor_penghambat`, `faktor_pendukung`, `created_at`, `updated_at`) VALUES
-(20, '2025', 'Januari', '-', '-', 312180.00, 2000000.00, 392810.00, 839120.00, 125.83, 41.96, '', '', '', '2026-07-29 02:04:08', '2026-07-29 02:04:08'),
-(21, '2025', 'Januari', '-', '-', 217389.00, 738927.00, 3878.00, 798237.00, 1.78, 108.03, '', '', '', '2026-07-29 02:04:08', '2026-07-29 02:04:08');
+(6, '2025', 'Januari', '-', '-', 2.00, 2000000.00, 1.00, 1200000.00, 50.00, 60.00, '', '', '', '2026-07-29 01:08:43', '2026-07-29 01:08:43'),
+(7, '2025', 'Januari', '-', '-', 2.00, 2000000.00, 1.00, 900000.00, 50.00, 45.00, '', '', '', '2026-07-29 01:08:43', '2026-07-29 01:08:43');
 
 -- --------------------------------------------------------
 
@@ -594,7 +617,10 @@ CREATE TABLE `slider` (
 --
 
 INSERT INTO `slider` (`id`, `gambar`, `judul`, `urutan`, `status`, `created_at`) VALUES
-(32, '1785256060_Cekidot.png', 'Slide', 1, 'aktif', '2026-07-29 00:27:40');
+(28, '1784449116_Gemini_Generated_Image_toyp45toyp45toyp.png', 'Slide 1', 13, 'aktif', '2026-07-19 15:18:36'),
+(29, '1784449970_Definisi Operasional 1 (2).png', 'Slide DO 1', 14, 'aktif', '2026-07-19 15:32:50'),
+(30, '1784450007_Definisi Operasional 2 (2).png', 'Slide DO 2', 15, 'aktif', '2026-07-19 15:33:27'),
+(31, '1784450025_Definisi Operasioanl 3.png', 'Slide', 16, 'aktif', '2026-07-19 15:33:45');
 
 -- --------------------------------------------------------
 
@@ -617,6 +643,14 @@ CREATE TABLE `surat_masuk` (
   `status` enum('baru','dibaca','diproses','selesai') DEFAULT 'baru',
   `dibaca` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `surat_masuk`
+--
+
+INSERT INTO `surat_masuk` (`id`, `nomor_surat`, `tanggal_surat`, `asal_instansi`, `nama_pengirim`, `no_hp`, `perihal`, `keterangan`, `file_surat`, `tanggal_masuk`, `ip_address`, `status`, `dibaca`) VALUES
+(8, '009.B.BSB.FH-UTD.I.2026', '2026-08-03', 'BENGKEL SENI BALIA,FAKULTAS HUKUM UNTAD', 'ANANDYA PRADIPTA PUTRA', '08226951750', 'PEMINJAMAN ALAT', 'Peminjaman alat untuk kebutuhan penampilan TADULAKO LAW FESTIVAL', '1785735372_suratpeminjamanbsb2.pdf', '2026-08-03 12:36:12', '36.79.235.47', 'dibaca', 1),
+(10, '09/B/PAN-PEL/UPHDM-UNTAD/VIII/2026', '2026-08-17', 'Unit Pengkajian Hindu Dharma Mahasiswa Universitas Tadulako', 'Gangga Honesty', '082290199143', 'Permohonan Peminjaman Pakaian', 'Permohonan Peminjaman Pakaian', '1787054886_09SURATPEMINJAMANBAJUADATBUOL.pdf', '2026-08-18 19:08:06', '182.2.235.79', 'baru', 0);
 
 -- --------------------------------------------------------
 
@@ -641,7 +675,7 @@ INSERT INTO `users` (`id`, `username`, `password`, `nama_admin`, `email`, `creat
 (2, 'admin', '$2y$10$1S53bFmDLtwICcP9ZfGu6uS6xv6lpt2MCU3dZJPwep0RbW.kKtxiC', 'Administrator', 'admin@si-pari.go.id', '2026-07-05 19:55:59');
 
 --
--- Indexes for dumped tables
+-- Indeks untuk tabel yang dibuang
 --
 
 --
@@ -750,13 +784,13 @@ ALTER TABLE `capaian_program`
 -- AUTO_INCREMENT untuk tabel `dokumen_akip`
 --
 ALTER TABLE `dokumen_akip`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT untuk tabel `dokumen_iki`
 --
 ALTER TABLE `dokumen_iki`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT untuk tabel `iku_ekraf`
@@ -792,7 +826,7 @@ ALTER TABLE `iku_wisatawan`
 -- AUTO_INCREMENT untuk tabel `monev_akumulasi`
 --
 ALTER TABLE `monev_akumulasi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `monev_bukti`
@@ -804,19 +838,19 @@ ALTER TABLE `monev_bukti`
 -- AUTO_INCREMENT untuk tabel `monev_bulanan`
 --
 ALTER TABLE `monev_bulanan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `slider`
 --
 ALTER TABLE `slider`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT untuk tabel `surat_masuk`
 --
 ALTER TABLE `surat_masuk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`

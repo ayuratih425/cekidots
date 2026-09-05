@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -16,24 +16,26 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
+        $request->validate([
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
 
-        if (Auth::attempt(['username' => $credentials['username'], 'password' => $credentials['password']])) {
-            $request->session()->regenerate();
-
-            $user = Auth::user();
-
-            $role = $user->role;
-            if ($role === 'anggota') {
-                return redirect()->route('anggota.dashboard')->with('success', 'Login berhasil!');
-            }
-
-            return redirect()->route('admin.dashboard')->with('success', 'Login berhasil!');
+        // Blokir setelah 5x salah login dari IP yang sama dalam 1 menit
+        $key = 'login:'.$request->ip();
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            $detik = RateLimiter::availableIn($key);
+            return back()->with('error', "Terlalu banyak percobaan login. Coba lagi dalam {$detik} detik.");
         }
 
+        if (Auth::attempt($request->only('username', 'password'))) {
+            RateLimiter::clear($key);
+            $request->session()->regenerate();
+            $route = Auth::user()->isAnggota() ? 'anggota.dashboard' : 'admin.dashboard';
+            return redirect()->route($route)->with('success', 'Login berhasil!');
+        }
+
+        RateLimiter::hit($key, 60); // catat percobaan gagal, reset setelah 60 detik
         return back()->with('error', 'Username atau password salah!');
     }
 
@@ -42,20 +44,6 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
         return redirect('/');
-    }
-
-    public function resetPassword()
-    {
-        $user = User::where('username', 'admin')->first();
-        if ($user) {
-            $user->password = Hash::make('password');
-            $user->save();
-
-            return view('auth.reset-password')->with('success', 'Password berhasil direset!');
-        }
-
-        return view('auth.reset-password')->with('error', 'User admin tidak ditemukan!');
     }
 }

@@ -17,6 +17,8 @@ class User extends Authenticatable
         'email',
         'role',
         'divisi',
+        'bidang_id',
+        'is_active',
     ];
 
     public function isSuperAdmin(): bool
@@ -31,12 +33,17 @@ class User extends Authenticatable
 
     public function isAdminBidang(): bool
     {
-        return false; // diganti sistem divisi
+        return $this->role === 'admin_bidang';
     }
 
     public function isAnggota(): bool
     {
         return $this->role === 'anggota';
+    }
+
+    public function bidang()
+    {
+        return $this->belongsTo(\App\Models\Bidang::class, 'bidang_id');
     }
 
     public function uploads()

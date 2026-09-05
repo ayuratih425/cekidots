@@ -725,8 +725,10 @@
                     </button>
                 </div>
 
+                @include('public.partials.upload-anggota-section', ['route_name' => route('iki.public')])
+
                 <div class="dokumen-grid">
-                    @if($dokumen->isEmpty())
+                    @if(empty($dokumen))
                     <div class="empty-state">
                         <i class="fas fa-file-alt"></i>
                         <h3>Belum Ada Dokumen</h3>
@@ -781,14 +783,12 @@
                     @endif
                 </div>
 
-                @include('public.partials.upload-anggota-section', ['route_name' => route('iki.public')])
-
             </div>
         </div>
     </section>
 </section>
 
-<!-- Modal Preview - Sama dengan akip -->
+<!-- Modal Preview -->
 <div class="modal-overlay" id="previewModal">
     <div class="modal-box">
         <div class="modal-header">

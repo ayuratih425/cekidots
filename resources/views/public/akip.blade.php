@@ -731,7 +731,7 @@
                 @include('public.partials.upload-anggota-section', ['route_name' => route('akip.public')])
 
                 <div class="dokumen-grid">
-                    @if($dokumen->isEmpty())
+                    @if(empty($dokumen))
                     <div class="empty-state">
                         <i class="fas fa-file-alt"></i>
                         <h3>Belum Ada Dokumen</h3>

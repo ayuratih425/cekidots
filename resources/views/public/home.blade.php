@@ -210,7 +210,50 @@
         .btn-layanan { font-size: 10px; padding: 4px 12px; gap: 4px; }
     }
 
-    /* ===== STATISTIK PERKEMBANGAN ===== */
+    /* ===== DOKUMEN TERBARU ===== */
+    .dokumen-section {
+        padding: 60px 0 70px;
+        background: linear-gradient(180deg, #eef2f7 0%, #dce3ed 100%);
+    }
+    .dokumen-section .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .dokumen-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .dokumen-card {
+        background: #fff;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    .dokumen-card-header {
+        padding: 16px 20px;
+        display: flex; align-items: center; gap: 12px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+    .dokumen-card-header .dh-icon {
+        width: 40px; height: 40px; border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px; flex-shrink: 0;
+    }
+    .dokumen-card-header .dh-icon.iki { background: #dbeafe; color: #1d4ed8; }
+    .dokumen-card-header .dh-icon.akip { background: #d1fae5; color: #065f46; }
+    .dokumen-card-header h3 { font-size: 15px; font-weight: 700; color: #0f3b5e; margin: 0; }
+    .dokumen-card-header .dh-sub { font-size: 12px; color: #94a3b8; }
+    .dokumen-list { list-style: none; padding: 0; margin: 0; }
+    .dokumen-list li {
+        display: flex; align-items: center; gap: 12px;
+        padding: 12px 20px; border-bottom: 1px solid #f8fafc;
+        font-size: 13px; transition: background 0.15s;
+    }
+    .dokumen-list li:last-child { border-bottom: none; }
+    .dokumen-list li:hover { background: #f8fafc; }
+    .dokumen-list li .dl-icon { color: #94a3b8; flex-shrink: 0; }
+    .dokumen-list li .dl-info { flex: 1; }
+    .dokumen-list li .dl-info .dl-title { font-weight: 600; color: #1e293b; }
+    .dokumen-list li .dl-info .dl-meta { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+    .dokumen-list li .dl-folder { font-size: 11px; background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 8px; white-space: nowrap; }
+    .dokumen-empty { padding: 30px 20px; text-align: center; color: #94a3b8; font-size: 13px; }
+    @media (max-width: 768px) { .dokumen-grid { grid-template-columns: 1fr; } }
+
     .stats-section {
         padding: 70px 0 20px;
         background: linear-gradient(180deg, #dce3ed 0%, #eef2f7 100%);
@@ -282,7 +325,7 @@
 <!-- SLIDER -->
 <section class="slider-section" id="homeSlider">
     <div class="slider-container" id="sliderContainer">
-        @if($slides->isEmpty())
+        @if(empty($slides))
         <div class="slide active">
             <img class="slide-main" src="{{ asset('assets/img/slide-1.jpg') }}" alt="Default Slide">
         </div>
@@ -295,7 +338,7 @@
         @else
         @foreach($slides as $index => $slide)
         <div class="slide {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}">
-            <img class="slide-main" src="{{ asset('assets/img/slider/' . $slide->gambar) }}" alt="{{ $slide->judul }}">
+            <img class="slide-main" src="{{ asset('storage/uploads/slider/' . $slide->gambar) }}" alt="{{ $slide->judul }}">
         </div>
         @endforeach
         @endif
@@ -305,7 +348,7 @@
     <button class="slider-btn next" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
 
     <div class="slider-dots" id="sliderDots">
-        @for($i = 0; $i < max(3, $slides->count()); $i++)
+        @for($i = 0; $i < max(3, count($slides)); $i++)
         <span class="dot {{ $i === 0 ? 'active' : '' }}" data-index="{{ $i }}"></span>
         @endfor
     </div>

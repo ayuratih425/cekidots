@@ -412,6 +412,11 @@
                                         <a href="javascript:void(0)" class="btn btn-sm btn-warning" onclick="openPreview('{{ Storage::url('uploads/anggota/' . $up->file_name) }}')"><i class="fas fa-eye"></i></a>
                                         @endif
                                         <a href="{{ route('anggota.download', $up->id) }}" class="btn btn-sm btn-info"><i class="fas fa-download"></i></a>
+                                        @if($up->user_id === auth()->id() && !$sudahArsip->contains($up->file_name))
+                                        <button type="button" class="btn btn-sm" style="background:#d1fae5;color:#065f46;" onclick="openArsipModal({{ $up->id }}, '{{ addslashes($up->judul) }}')"><i class="fas fa-archive"></i></button>
+                                        @elseif($sudahArsip->contains($up->file_name))
+                                        <span class="btn btn-sm" style="background:#f1f5f9;color:#94a3b8;cursor:default;"><i class="fas fa-check"></i> Terarsip</span>
+                                        @endif
                                     </span>
                                 </li>
                                 @endforeach
@@ -451,6 +456,11 @@
                                                     <a href="javascript:void(0)" class="btn btn-sm btn-warning" onclick="openPreview('{{ Storage::url('uploads/anggota/' . $up->file_name) }}')"><i class="fas fa-eye"></i> Pratinjau</a>
                                                     @endif
                                                     <a href="{{ route('anggota.download', $up->id) }}" class="btn btn-sm btn-info"><i class="fas fa-download"></i> Unduh</a>
+                                                    @if($up->user_id === auth()->id() && !$sudahArsip->contains($up->file_name))
+                                                    <button type="button" class="btn btn-sm" style="background:#d1fae5;color:#065f46;" onclick="openArsipModal({{ $up->id }}, '{{ addslashes($up->judul) }}')"><i class="fas fa-archive"></i> Arsipkan</button>
+                                                    @elseif($sudahArsip->contains($up->file_name))
+                                                    <span class="btn btn-sm" style="background:#f1f5f9;color:#94a3b8;cursor:default;"><i class="fas fa-check"></i> Terarsip</span>
+                                                    @endif
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -469,6 +479,63 @@
     </div>
 </section>
 
+<!-- ARSIP SAYA -->
+<section class="arsip-section" style="padding-top:60px; background:#f8fafc; border-top: 3px solid #e2e8f0;">
+    <div class="container">
+        <div class="section-header">
+            <div class="header-icon"><i class="fas fa-archive"></i></div>
+            <div class="header-line"></div>
+            <h2>Arsip <span>Saya</span></h2>
+            <p class="subtitle">Dokumen yang sudah kamu arsipkan — bisa dihapus jika salah</p>
+        </div>
+        <div class="tree-panel" style="max-width:900px;">
+            @if($arsip_saya->isEmpty())
+                <div style="text-align:center;padding:50px 20px;color:#94a3b8;">
+                    <i class="fas fa-archive" style="font-size:48px;opacity:0.15;display:block;margin-bottom:14px;color:#0f3b5e;"></i>
+                    <p style="font-size:15px;font-weight:600;color:#334155;margin-bottom:4px;">Belum ada arsip</p>
+                    <p style="font-size:13px;">Arsipkan dokumen dari struktur folder di atas</p>
+                </div>
+            @else
+            <div style="display:flex;flex-direction:column;gap:10px;">
+                @foreach($arsip_saya as $a)
+                <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:#fff;border-radius:12px;border:1.5px solid #e8ecf1;transition:all 0.2s;" onmouseover="this.style.borderColor='#0f3b5e'" onmouseout="this.style.borderColor='#e8ecf1'">
+                    {{-- Icon jenis --}}
+                    <div style="width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+                        background:{{ $a->jenis_surat=='masuk'?'#dbeafe':($a->jenis_surat=='keluar'?'#fef3c7':'#ede9fe') }};
+                        color:{{ $a->jenis_surat=='masuk'?'#1d4ed8':($a->jenis_surat=='keluar'?'#b45309':'#7c3aed') }};">
+                        <i class="fas fa-file-alt" style="font-size:16px;"></i>
+                    </div>
+                    {{-- Info --}}
+                    <div style="flex:1;min-width:0;">
+                        <div style="font-size:14px;font-weight:700;color:#0f172a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ $a->perihal }}</div>
+                        <div style="font-size:12px;color:#64748b;margin-top:3px;display:flex;flex-wrap:wrap;gap:10px;">
+                            <span><i class="fas fa-hashtag" style="font-size:10px;"></i> {{ $a->nomor_surat }}</span>
+                            <span><i class="fas fa-calendar" style="font-size:10px;"></i> {{ $a->tanggal_surat->format('d M Y') }}</span>
+                            <span><i class="fas fa-weight" style="font-size:10px;"></i> {{ $a->file_size ? number_format($a->file_size/1024,1).' KB' : '-' }}</span>
+                        </div>
+                    </div>
+                    {{-- Badge jenis --}}
+                    <span style="padding:3px 12px;border-radius:20px;font-size:11px;font-weight:700;flex-shrink:0;
+                        background:{{ $a->jenis_surat=='masuk'?'#dbeafe':($a->jenis_surat=='keluar'?'#fef3c7':'#ede9fe') }};
+                        color:{{ $a->jenis_surat=='masuk'?'#1d4ed8':($a->jenis_surat=='keluar'?'#b45309':'#7c3aed') }};">
+                        {{ ucfirst($a->jenis_surat) }}
+                    </span>
+                    {{-- Aksi --}}
+                    <div style="display:flex;gap:6px;flex-shrink:0;">
+                        <a href="{{ route('admin.arsip.download', $a->id) }}" class="btn btn-sm btn-info" title="Unduh"><i class="fas fa-download"></i></a>
+                        <form method="POST" action="{{ route('anggota.arsip.hapus', $a->id) }}" style="display:inline;" onsubmit="return confirm('Hapus arsip ini?')">
+                            @csrf
+                            <button type="submit" class="btn btn-sm" style="background:#fef2f2;color:#dc2626;" title="Hapus"><i class="fas fa-trash"></i></button>
+                        </form>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            @endif
+        </div>
+    </div>
+</section>
+
 <div class="modal" id="previewModal">
     <div class="modal-box">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
@@ -478,10 +545,56 @@
         <div id="previewFrame"></div>
     </div>
 </div>
+
+{{-- Modal Arsipkan --}}
+<div class="modal" id="arsipModal">
+    <div class="modal-box" style="max-width:480px;">
+        <h3><i class="fas fa-archive"></i> Arsipkan Dokumen</h3>
+        <p id="arsipJudul" style="font-size:13px;color:#64748b;margin-bottom:18px;"></p>
+        <form id="arsipForm" method="POST">
+            @csrf
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Nomor Surat <span style="color:#dc2626;">*</span></label>
+                <input type="text" name="nomor_surat" required placeholder="Contoh: 005/DISPAR/2025" class="form-control">
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Tanggal Surat <span style="color:#dc2626;">*</span></label>
+                <input type="date" name="tanggal_surat" required value="{{ date('Y-m-d') }}" class="form-control">
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Jenis Surat <span style="color:#dc2626;">*</span></label>
+                <select name="jenis_surat" required class="form-control">
+                    <option value="masuk">Surat Masuk</option>
+                    <option value="keluar">Surat Keluar</option>
+                    <option value="internal">Surat Internal</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom:18px;">
+                <label>Keterangan</label>
+                <textarea name="keterangan" rows="2" placeholder="Keterangan tambahan (opsional)" class="form-control"></textarea>
+            </div>
+            <div style="display:flex;gap:10px;justify-content:flex-end;">
+                <button type="button" class="btn btn-secondary" onclick="closeArsipModal()">Batal</button>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-archive"></i> Simpan ke Arsip</button>
+            </div>
+        </form>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    var alerts = document.querySelectorAll('.alert');
+    alerts.forEach(function(alert) {
+        setTimeout(function() {
+            alert.style.transition = 'opacity 0.5s ease';
+            alert.style.opacity = '0';
+            setTimeout(function() { alert.remove(); }, 500);
+        }, 3000);
+    });
+});
+
 function openPreview(url) {
     var isImage = /\.(jpg|jpeg|png|gif|webp)(\?|$)/i.test(url);
     var frame = document.getElementById('previewFrame');
@@ -505,6 +618,17 @@ function toggleAll() {
     btn.innerHTML = allOpen
         ? '<i class="fas fa-expand-arrows-alt"></i> Perluas Semua'
         : '<i class="fas fa-compress-arrows-alt"></i> Ciutkan Semua';
+}
+
+function openArsipModal(uploadId, judul) {
+    document.getElementById('arsipJudul').textContent = 'Dokumen: ' + judul;
+    document.getElementById('arsipForm').action = '/anggota/arsipkan/' + uploadId;
+    document.getElementById('arsipModal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+}
+function closeArsipModal() {
+    document.getElementById('arsipModal').classList.remove('show');
+    document.body.style.overflow = 'auto';
 }
 </script>
 @endsection

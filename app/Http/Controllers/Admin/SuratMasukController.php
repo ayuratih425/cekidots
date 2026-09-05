@@ -3,30 +3,27 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\SuratMasuk;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SuratMasukController extends Controller
 {
     public function index()
     {
-        $surat = SuratMasuk::orderBy('id', 'desc')->get();
+        $surat      = SuratMasuk::orderByDesc('id')->paginate(20)->withQueryString();
         $total_baru = SuratMasuk::where('status', 'baru')->count();
         return view('admin.surat-masuk', compact('surat', 'total_baru'));
     }
 
     public function destroy(Request $request)
     {
-        $id = $request->delete_id;
-        $surat = SuratMasuk::findOrFail($id);
-        
+        $surat = SuratMasuk::findOrFail($request->delete_id);
+
         if ($surat->file_surat) {
-            $file_path = public_path('uploads/surat/' . $surat->file_surat);
-            if (file_exists($file_path)) {
-                unlink($file_path);
-            }
+            Storage::disk('public')->delete('uploads/surat/'.$surat->file_surat);
         }
-        
+
         $surat->delete();
         return redirect()->route('admin.surat.index')->with('success', 'Surat berhasil dihapus!');
     }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CapaianProgram;
-use Illuminate\Support\Facades\Validator;
+use App\Models\SuratMasuk;
 use Illuminate\Support\Facades\Storage;
 
 class CapaianController extends Controller
@@ -30,19 +30,8 @@ class CapaianController extends Controller
             $tahun_aktif = $tahun_list[0];
         }
         
-        $total_baru = \App\Models\SuratMasuk::where('status', 'baru')->count();
-        
-        // Pastikan tabel dan kolom ada
-        try {
-            \Illuminate\Support\Facades\Schema::table('capaian_program', function ($table) {
-                if (!\Illuminate\Support\Facades\Schema::hasColumn('capaian_program', 'file_sumber')) {
-                    $table->string('file_sumber')->nullable()->after('sumber_data');
-                }
-            });
-        } catch (\Exception $e) {
-            // Column sudah ada atau error
-        }
-        
+        $total_baru = SuratMasuk::where('status', 'baru')->count();
+
         // Ambil data
         $capaian_data = CapaianProgram::where('tahun', $tahun_aktif)->orderBy('id')->get();
         
@@ -77,7 +66,7 @@ class CapaianController extends Controller
                     'indikator' => 'Jumlah pergerakan wisatawan mancanegara (ribu perhari)',
                     'target' => 28750,
                     'realisasi' => 3847,
-                    'capaian' => 13.38,
+                    'capaian' => round((3847 / 28750) * 100, 2),
                     'frekwensi' => 'Bulanan / Tahunan',
                     'sumber_data' => 'BPS, Dinas Pariwisata Kab./Kota',
                     'penanggung_jawab' => 'BIDANG Pemasaran Pariwisata'
@@ -88,7 +77,7 @@ class CapaianController extends Controller
                     'indikator' => 'Jumlah pergerakan wisatawan mancanegara (juta orang)',
                     'target' => 9925000,
                     'realisasi' => 4988167,
-                    'capaian' => 50.28,
+                    'capaian' => round((4988167 / 9925000) * 100, 2),
                     'frekwensi' => 'Bulanan / Tahunan',
                     'sumber_data' => 'BPS, Dinas Pariwisata Kab./Kota',
                     'penanggung_jawab' => 'BIDANG Pemasaran Pariwisata'
@@ -168,16 +157,8 @@ class CapaianController extends Controller
             $capaian_data = CapaianProgram::where('tahun', $tahun_aktif)->orderBy('id')->get();
         }
         
-        // Hitung stats
-        $total_data = $capaian_data->count();
-        $rata_capaian = 0;
-        $total_capaian = 0;
-        foreach ($capaian_data as $d) {
-            $total_capaian += (float) $d->capaian;
-        }
-        if ($total_data > 0) {
-            $rata_capaian = $total_capaian / $total_data;
-        }
+        $total_data   = $capaian_data->count();
+        $rata_capaian = $total_data > 0 ? $capaian_data->avg('capaian') : 0;
         
         return view('admin.capaian', compact(
             'capaian_data',
@@ -205,7 +186,7 @@ class CapaianController extends Controller
                 
                 $capaian = 0;
                 if ($target > 0) {
-                    $capaian = ($realisasi / $target) * 100;
+                    $capaian = round(($realisasi / $target) * 100, 2);
                 }
                 
                 $data = [
@@ -230,16 +211,17 @@ class CapaianController extends Controller
             $max_size = 10 * 1024 * 1024;
             
             foreach ($request->file('file_sumber') as $id => $file) {
-                if ($file->isValid()) {
-                    $ext = $file->getClientOriginalExtension();
-                    if (in_array($ext, $allowed) && $file->getSize() <= $max_size) {
-                        Storage::disk('public')->delete('uploads/capaian/' . $existing->file_sumber);
-                        
-                        $file_name = 'sumber_' . $id . '_' . time() . '.' . $ext;
-                        $file->storeAs('uploads/capaian', $file_name, 'public');
-                        CapaianProgram::where('id', $id)->update(['file_sumber' => $file_name]);
-                    }
+                if (!$file->isValid()) continue;
+                $ext = $file->getClientOriginalExtension();
+                if (!in_array($ext, $allowed) || $file->getSize() > $max_size) continue;
+
+                $item = CapaianProgram::find($id);
+                if ($item && $item->file_sumber) {
+                    Storage::disk('public')->delete('uploads/capaian/'.$item->file_sumber);
                 }
+                $file_name = 'sumber_'.$id.'_'.time().'.'.$ext;
+                $file->storeAs('uploads/capaian', $file_name, 'public');
+                CapaianProgram::where('id', $id)->update(['file_sumber' => $file_name]);
             }
         }
         

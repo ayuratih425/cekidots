@@ -137,57 +137,95 @@
             {{-- ADMIN DIVISI --}}
             @elseif($user?->isAdminDivisi())
 
-            <li class="nav-section">DOKUMEN</li>
+            <li class="nav-section">KONTEN PUBLIK</li>
 
             <li>
-                <a href="{{ route('admin.akip.index') }}" class="{{ request()->routeIs('admin.akip.*') ? 'active' : '' }}">
-                    <i class="fas fa-clipboard-check"></i><span>Dokumen AKIP</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('admin.iki.index') }}" class="{{ request()->routeIs('admin.iki.*') ? 'active' : '' }}">
-                    <i class="fas fa-user-check"></i><span>Dokumen IKI</span>
-                </a>
-            </li>
-
-            <li class="nav-section">KINERJA</li>
-
-            <li>
-                <a href="{{ route('admin.iku.index') }}" class="{{ request()->routeIs('admin.iku.*') ? 'active' : '' }}">
-                    <i class="fas fa-chart-line"></i><span>IKU</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('admin.capaian.index') }}" class="{{ request()->routeIs('admin.capaian.*') ? 'active' : '' }}">
-                    <i class="fas fa-flag-checkered"></i><span>Capaian Program</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('admin.monev.index') }}" class="{{ request()->routeIs('admin.monev.*') ? 'active' : '' }}">
-                    <i class="fas fa-chart-pie"></i><span>Monev Renaksi</span>
+                <a href="{{ route('admin.surat.index') }}" class="{{ request()->routeIs('admin.surat.*') ? 'active' : '' }}">
+                    <i class="fas fa-inbox"></i>
+                    <span>Surat Masuk</span>
+                    @if($total_baru > 0)
+                    <span class="badge">{{ $total_baru }}</span>
+                    @endif
                 </a>
             </li>
 
-            <li class="nav-section">KELOLA</li>
+            <li class="nav-section">DOKUMEN KINERJA</li>
+
+            {{-- Dropdown: Dokumen --}}
+            <li class="has-dropdown {{ request()->routeIs('admin.akip.*') || request()->routeIs('admin.iki.*') ? 'open' : '' }}">
+                <a href="#" class="dropdown-toggle {{ request()->routeIs('admin.akip.*') || request()->routeIs('admin.iki.*') ? 'active' : '' }}" onclick="toggleDropdown(this)">
+                    <i class="fas fa-folder-open"></i><span>Dokumen</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="{{ route('admin.akip.index') }}" class="{{ request()->routeIs('admin.akip.*') ? 'active' : '' }}">
+                            <i class="fas fa-clipboard-check"></i> AKIP
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.iki.index') }}" class="{{ request()->routeIs('admin.iki.*') ? 'active' : '' }}">
+                            <i class="fas fa-user-check"></i> IKI
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            {{-- Dropdown: Data Kinerja --}}
+            <li class="has-dropdown {{ request()->routeIs('admin.iku.*') || request()->routeIs('admin.capaian.*') || request()->routeIs('admin.monev.*') ? 'open' : '' }}">
+                <a href="#" class="dropdown-toggle {{ request()->routeIs('admin.iku.*') || request()->routeIs('admin.capaian.*') || request()->routeIs('admin.monev.*') ? 'active' : '' }}" onclick="toggleDropdown(this)">
+                    <i class="fas fa-chart-bar"></i><span>Data Kinerja</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="{{ route('admin.iku.index') }}" class="{{ request()->routeIs('admin.iku.*') ? 'active' : '' }}">
+                            <i class="fas fa-chart-line"></i> IKU
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.capaian.index') }}" class="{{ request()->routeIs('admin.capaian.*') ? 'active' : '' }}">
+                            <i class="fas fa-flag-checkered"></i> Capaian Program
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.monev.index') }}" class="{{ request()->routeIs('admin.monev.*') ? 'active' : '' }}">
+                            <i class="fas fa-chart-pie"></i> Monev Renaksi
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-section">MANAJEMEN</li>
+
+            {{-- Dropdown: Manajemen --}}
+            <li class="has-dropdown {{ request()->routeIs('admin.users.*') || request()->routeIs('admin.folder.*') || request()->routeIs('admin.upload.*') ? 'open' : '' }}">
+                <a href="#" class="dropdown-toggle {{ request()->routeIs('admin.users.*') || request()->routeIs('admin.folder.*') || request()->routeIs('admin.upload.*') ? 'active' : '' }}" onclick="toggleDropdown(this)">
+                    <i class="fas fa-cogs"></i><span>Manajemen</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                            <i class="fas fa-users"></i> Kelola User
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.folder.index') }}" class="{{ request()->routeIs('admin.folder.*') ? 'active' : '' }}">
+                            <i class="fas fa-folder"></i> Folder Dokumen
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.upload.index') }}" class="{{ request()->routeIs('admin.upload.*') ? 'active' : '' }}">
+                            <i class="fas fa-file-upload"></i> Upload Anggota
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
             <li>
                 <a href="{{ route('admin.arsip.index') }}" class="{{ request()->routeIs('admin.arsip.*') ? 'active' : '' }}">
                     <i class="fas fa-archive"></i><span>Arsip Surat</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('admin.folder.index') }}" class="{{ request()->routeIs('admin.folder.*') ? 'active' : '' }}">
-                    <i class="fas fa-folder"></i><span>Folder Dokumen</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('admin.upload.index') }}" class="{{ request()->routeIs('admin.upload.*') ? 'active' : '' }}">
-                    <i class="fas fa-file-upload"></i><span>Upload Anggota</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
-                    <i class="fas fa-users"></i><span>Kelola User</span>
                 </a>
             </li>
 
@@ -318,10 +356,18 @@
     color: #fff;
     font-size: 10px;
     font-weight: 700;
-    padding: 1px 7px;
-    border-radius: 20px;
+    padding: 2px 6px;
+    border-radius: 10px;
     margin-left: auto;
     flex-shrink: 0;
+    min-width: 18px;
+    max-width: 32px;
+    width: fit-content;
+    text-align: center;
+    line-height: 1.4;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Dropdown */

@@ -6,7 +6,7 @@
 <style>
     .stats-grid {
         display: grid;
-        grid-template-columns: repeat(6, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
         gap: 16px;
         margin-bottom: 28px;
     }
@@ -78,7 +78,7 @@
 
     .dashboard-grid {
         display: grid;
-        grid-template-columns: 2fr 1fr;
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
         gap: 24px;
     }
 
@@ -214,7 +214,7 @@
         margin-top: 2px;
     }
 
-    @media (max-width: 1200px) {
+    @media (max-width: 1300px) {
         .stats-grid { grid-template-columns: repeat(3, 1fr); }
         .dashboard-grid { grid-template-columns: 1fr; }
     }

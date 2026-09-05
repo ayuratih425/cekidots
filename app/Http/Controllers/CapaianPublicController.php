@@ -27,7 +27,7 @@ class CapaianPublicController extends Controller
     public function index()
     {
         $tahun_list = range(2025, 2030);
-        $tahun_aktif = request('tahun', date('Y'));
+        $tahun_aktif = request('tahun', '2025');
         
         if (!in_array((int)$tahun_aktif, $tahun_list)) {
             $tahun_aktif = $tahun_list[0];

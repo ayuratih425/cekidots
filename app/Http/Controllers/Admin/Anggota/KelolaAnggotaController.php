@@ -10,53 +10,40 @@ use Illuminate\Support\Facades\Hash;
 
 class KelolaAnggotaController extends Controller
 {
-    protected function scopeToOwnBidang(): void
+    private function authorizeAnggota(User $target): void
     {
-        $user = Auth::user();
-
-        if (! $user->isAdminBidang()) {
-            abort(403, 'Halaman ini hanya untuk admin bidang.');
-        }
-
-        if (! $user->bidang_id) {
-            abort(403, 'Bidang akun belum diatur. Hubungi Super Admin.');
+        $auth = Auth::user();
+        if ($auth->isAdminDivisi() && ($target->divisi !== $auth->divisi || $target->role !== 'anggota')) {
+            abort(403, 'Anda hanya dapat mengelola anggota divisi Anda.');
         }
     }
 
     public function index()
     {
-        $this->scopeToOwnBidang();
-        $user = Auth::user();
-
-        $anggota = User::with('bidang')
-            ->where('bidang_id', $user->bidang_id)
-            ->where('role', 'anggota')
-            ->orderBy('nama_admin')
-            ->get();
+        $user    = Auth::user();
+        $anggota = User::where('role', 'anggota')
+            ->when($user->isAdminDivisi(), fn ($q) => $q->where('divisi', $user->divisi))
+            ->orderBy('nama_admin')->get();
 
         return view('admin.kelola-anggota', compact('anggota'));
     }
 
     public function store(Request $request)
     {
-        $this->scopeToOwnBidang();
-        $user = Auth::user();
-
         $request->validate([
-            'username' => 'required|string|unique:users,username',
+            'username'   => 'required|string|unique:users,username',
             'nama_admin' => 'required|string',
-            'password' => 'required|string|min:6',
+            'password'   => 'required|string|min:6',
+            'divisi'     => 'required|string',
         ]);
 
         User::create([
-            'username' => $request->username,
+            'username'   => $request->username,
             'nama_admin' => $request->nama_admin,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'anggota',
-            'divisi' => $request->divisi,
-            'bidang_id' => $user->bidang_id,
-            'is_active' => true,
+            'email'      => $request->email,
+            'password'   => Hash::make($request->password),
+            'role'       => 'anggota',
+            'divisi'     => $request->divisi,
         ]);
 
         return back()->with('success', 'Anggota berhasil ditambahkan!');
@@ -64,23 +51,18 @@ class KelolaAnggotaController extends Controller
 
     public function update(Request $request, User $user)
     {
-        $this->scopeToOwnBidang();
-        $auth = Auth::user();
-
-        if ($user->bidang_id !== $auth->bidang_id || $user->role !== 'anggota') {
-            abort(403, 'Anda hanya dapat mengelola anggota bidang Anda.');
-        }
+        $this->authorizeAnggota($user);
 
         $request->validate([
             'nama_admin' => 'required|string',
-            'username' => 'required|string|unique:users,username,'.$user->id,
+            'username'   => 'required|string|unique:users,username,'.$user->id,
         ]);
 
         $data = [
             'nama_admin' => $request->nama_admin,
-            'username' => $request->username,
-            'email' => $request->email,
-            'divisi' => $request->divisi,
+            'username'   => $request->username,
+            'email'      => $request->email,
+            'divisi'     => $request->divisi,
         ];
 
         if ($request->filled('password')) {
@@ -88,35 +70,20 @@ class KelolaAnggotaController extends Controller
         }
 
         $user->update($data);
-
         return back()->with('success', 'Anggota berhasil diupdate!');
     }
 
     public function toggleActive(User $user)
     {
-        $this->scopeToOwnBidang();
-        $auth = Auth::user();
-
-        if ($user->bidang_id !== $auth->bidang_id || $user->role !== 'anggota') {
-            abort(403, 'Anda hanya dapat mengelola anggota bidang Anda.');
-        }
-
+        $this->authorizeAnggota($user);
         $user->update(['is_active' => ! $user->is_active]);
-
         return back()->with('success', 'Status anggota berhasil diubah!');
     }
 
     public function destroy(User $user)
     {
-        $this->scopeToOwnBidang();
-        $auth = Auth::user();
-
-        if ($user->bidang_id !== $auth->bidang_id || $user->role !== 'anggota') {
-            abort(403, 'Anda hanya dapat mengelola anggota bidang Anda.');
-        }
-
+        $this->authorizeAnggota($user);
         $user->delete();
-
         return back()->with('success', 'Anggota berhasil dihapus!');
     }
 }

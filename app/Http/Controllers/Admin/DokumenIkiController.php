@@ -4,108 +4,102 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\DokumenIki;
-use App\Models\SuratMasuk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 
 class DokumenIkiController extends Controller
 {
-    public function index()
+    private array $tahun_list;
+    private array $divisi_list;
+
+    public function __construct()
+    {
+        $this->tahun_list  = range(2025, 2030);
+        $this->divisi_list = ['Kepegawaian', 'Program', 'Keuangan', 'Ekraf', 'Destinasi', 'Pemasaran', 'Sdm'];
+    }
+
+    private function tahunAktif(): int
+    {
+        $tahun = (int) request('tahun', date('Y'));
+        return in_array($tahun, $this->tahun_list) ? $tahun : $this->tahun_list[0];
+    }
+
+    private function uploadFile($file, string $folder): array
+    {
+        $name = time().'_'.preg_replace('/[^a-zA-Z0-9._-]/', '', $file->getClientOriginalName());
+        $file->storeAs('uploads/'.$folder, $name, 'public');
+        return ['name' => $name, 'type' => $file->getClientOriginalExtension(), 'size' => $file->getSize()];
+    }
+
+    private function deleteFile(?string $name, string $folder): void
+    {
+        if ($name) Storage::disk('public')->delete('uploads/'.$folder.'/'.$name);
+    }
+
+    private function authorizeOwner(DokumenIki $dokumen): void
     {
         $user = Auth::user();
-        $tahun_list = range(2025, 2030);
-        $tahun_aktif = request('tahun', date('Y'));
-
-        if (! in_array((int) $tahun_aktif, $tahun_list)) {
-            $tahun_aktif = $tahun_list[0];
+        if ($user->isAdminDivisi() && $dokumen->divisi !== $user->divisi) {
+            abort(403, 'Anda hanya dapat mengelola dokumen divisi Anda.');
         }
+    }
 
-        $query = DokumenIki::where('tahun', $tahun_aktif);
-
-        if ($user->isAdminDivisi()) {
-            $query->where('divisi', $user->divisi);
-        }
-
+    public function index()
+    {
+        $user         = Auth::user();
+        $tahun_aktif  = $this->tahunAktif();
         $kategori_aktif = request('kategori', '');
-        if ($kategori_aktif !== '') {
-            $query->where('kategori', $kategori_aktif);
-        }
 
-        $dokumen = $query->orderBy('urutan')->get();
-        $total_baru = 0;
-        $divisi_list = ['Kepegawaian','Program','Keuangan','Ekraf','Destinasi','Pemasaran','Sdm'];
-        $is_admin_divisi = $user->isAdminDivisi();
-        $kategori_list = DokumenIki::where('kategori', '!=', '')->whereNotNull('kategori')
-            ->distinct('kategori')
-            ->orderBy('kategori')
-            ->pluck('kategori');
+        $dokumen = DokumenIki::where('tahun', $tahun_aktif)
+            ->when($user->isAdminDivisi(), fn ($q) => $q->where('divisi', $user->divisi))
+            ->when($kategori_aktif !== '', fn ($q) => $q->where('kategori', $kategori_aktif))
+            ->orderBy('urutan')->get();
 
-        return view('admin.iki', compact('dokumen', 'tahun_aktif', 'tahun_list', 'total_baru', 'divisi_list', 'is_admin_divisi', 'kategori_list', 'kategori_aktif'));
+        $kategori_list = DokumenIki::whereNotNull('kategori')->where('kategori', '!=', '')
+            ->orderBy('kategori')->distinct()->pluck('kategori');
+
+        return view('admin.iki', [
+            'dokumen'        => $dokumen,
+            'tahun_aktif'    => $tahun_aktif,
+            'tahun_list'     => $this->tahun_list,
+            'total_baru'     => 0,
+            'divisi_list'    => $this->divisi_list,
+            'is_admin_divisi'=> $user->isAdminDivisi(),
+            'kategori_list'  => $kategori_list,
+            'kategori_aktif' => $kategori_aktif,
+        ]);
     }
 
     public function store(Request $request)
     {
-        $user = Auth::user();
-
-        $validator = Validator::make($request->all(), [
-            'judul' => 'required|string',
-            'tahun' => 'required|integer',
-            'tipe_konten' => 'required|in:file,link',
+        $request->validate([
+            'judul'        => 'required|string',
+            'tahun'        => 'required|integer',
+            'tipe_konten'  => 'required|in:file,link',
+            'file_dokumen' => 'required_if:tipe_konten,file|file|max:10240',
+            'link_url'     => 'required_if:tipe_konten,link|nullable|url',
         ]);
 
-        if ($validator->fails()) {
-            return back()->with('error', 'Judul wajib diisi!')->withInput();
-        }
-
-        if ($request->tipe_konten == 'file') {
-            $validator = Validator::make($request->all(), [
-                'file_dokumen' => 'required|file|max:51200',
-            ]);
-            if ($validator->fails()) {
-                return back()->with('error', 'Silakan pilih file untuk diupload!')->withInput();
-            }
-        }
-
-        if ($request->tipe_konten == 'link') {
-            $validator = Validator::make($request->all(), [
-                'link_url' => 'required|url',
-            ]);
-            if ($validator->fails()) {
-                return back()->with('error', 'Silakan masukkan URL/Link dokumen yang valid!')->withInput();
-            }
-        }
-
-        $divisi = $user->isAdminDivisi() ? $user->divisi : $request->divisi;
-
-        $file_name = '';
-        $file_type = '';
-        $file_size = 0;
-
+        $user    = Auth::user();
+        $fileData = ['name' => '', 'type' => '', 'size' => 0];
         if ($request->hasFile('file_dokumen')) {
-            $file = $request->file('file_dokumen');
-            $file_name = time().'_'.preg_replace('/[^a-zA-Z0-9._-]/', '', $file->getClientOriginalName());
-            $file->storeAs('uploads/iki', $file_name, 'public');
-            $file_type = $file->getClientOriginalExtension();
-            $file_size = $file->getSize();
+            $fileData = $this->uploadFile($request->file('file_dokumen'), 'iki');
         }
-
-        $max_urutan = DokumenIki::where('tahun', $request->tahun)->max('urutan') ?? 0;
 
         DokumenIki::create([
-            'judul' => $request->judul,
-            'kategori' => $request->kategori ?? null,
-            'deskripsi' => $request->deskripsi,
-            'file_dokumen' => $file_name,
-            'tipe_konten' => $request->tipe_konten,
-            'link_url' => $request->tipe_konten == 'link' ? $request->link_url : null,
-            'file_type' => $file_type,
-            'file_size' => $file_size,
-            'tahun' => $request->tahun,
-            'divisi' => $divisi,
-            'urutan' => $max_urutan + 1,
-            'status' => 'aktif',
+            'judul'        => $request->judul,
+            'kategori'     => $request->kategori,
+            'deskripsi'    => $request->deskripsi,
+            'file_dokumen' => $fileData['name'],
+            'tipe_konten'  => $request->tipe_konten,
+            'link_url'     => $request->tipe_konten === 'link' ? $request->link_url : null,
+            'file_type'    => $fileData['type'],
+            'file_size'    => $fileData['size'],
+            'tahun'        => $request->tahun,
+            'divisi'       => $user->isAdminDivisi() ? $user->divisi : $request->divisi,
+            'urutan'       => (DokumenIki::where('tahun', $request->tahun)->max('urutan') ?? 0) + 1,
+            'status'       => 'aktif',
         ]);
 
         return redirect()->route('admin.iki.index', ['tahun' => $request->tahun])
@@ -114,115 +108,58 @@ class DokumenIkiController extends Controller
 
     public function update(Request $request)
     {
-        $user = Auth::user();
-        $id = $request->edit_id;
-        $dokumen = DokumenIki::findOrFail($id);
+        $dokumen = DokumenIki::findOrFail($request->edit_id);
+        $this->authorizeOwner($dokumen);
 
-        if ($user->isAdminDivisi() && $dokumen->divisi !== $user->divisi) {
-            abort(403, 'Anda hanya dapat mengelola dokumen divisi Anda.');
-        }
-
-        $validator = Validator::make($request->all(), [
-            'edit_judul' => 'required|string',
-            'edit_tahun' => 'required|integer',
+        $request->validate([
+            'edit_judul'       => 'required|string',
+            'edit_tahun'       => 'required|integer',
             'edit_tipe_konten' => 'required|in:file,link',
+            'edit_link_url'    => 'required_if:edit_tipe_konten,link|nullable|url',
+            'edit_file'        => 'nullable|file|max:10240',
         ]);
 
-        if ($validator->fails()) {
-            return back()->with('error', 'Judul wajib diisi!')->withInput();
-        }
-
+        $user = Auth::user();
         $data = [
-            'judul' => $request->edit_judul,
-            'kategori' => $request->edit_kategori ?? null,
-            'deskripsi' => $request->edit_deskripsi,
-            'tahun' => $request->edit_tahun,
+            'judul'       => $request->edit_judul,
+            'kategori'    => $request->edit_kategori,
+            'deskripsi'   => $request->edit_deskripsi,
+            'tahun'       => $request->edit_tahun,
             'tipe_konten' => $request->edit_tipe_konten,
         ];
+        if ($user->isAdminDivisi()) $data['divisi'] = $user->divisi;
 
-        if ($user->isAdminDivisi()) {
-            $data['divisi'] = $user->divisi;
-        }
-
-        if ($request->edit_tipe_konten == 'link') {
-            $validator = Validator::make($request->all(), [
-                'edit_link_url' => 'required|url',
-            ]);
-            if ($validator->fails()) {
-                return back()->with('error', 'Silakan masukkan URL/Link dokumen yang valid!')->withInput();
-            }
-            $data['link_url'] = $request->edit_link_url;
-            $data['file_dokumen'] = null;
-            $data['file_type'] = '';
-            $data['file_size'] = 0;
-
-            if ($dokumen->file_dokumen && $dokumen->tipe_konten == 'file') {
-                Storage::disk('public')->delete('uploads/iki/'.$dokumen->file_dokumen);
-            }
+        if ($request->edit_tipe_konten === 'link') {
+            $this->deleteFile($dokumen->file_dokumen, 'iki');
+            $data += ['link_url' => $request->edit_link_url, 'file_dokumen' => null, 'file_type' => '', 'file_size' => 0];
         } else {
             $data['link_url'] = null;
-
             if ($request->hasFile('edit_file')) {
-                $file = $request->file('edit_file');
-                $validator = Validator::make($request->all(), [
-                    'edit_file' => 'file|max:51200',
-                ]);
-                if ($validator->fails()) {
-                    return back()->with('error', 'Ukuran file maksimal 50MB!')->withInput();
-                }
-
-                Storage::disk('public')->delete('uploads/iki/'.$dokumen->file_dokumen);
-
-                $file_name = time().'_'.preg_replace('/[^a-zA-Z0-9._-]/', '', $file->getClientOriginalName());
-                $file->storeAs('uploads/iki', $file_name, 'public');
-                $data['file_dokumen'] = $file_name;
-                $data['file_type'] = $file->getClientOriginalExtension();
-                $data['file_size'] = $file->getSize();
-            } elseif ($dokumen->tipe_konten == 'file' && $dokumen->file_dokumen) {
-                $data['file_dokumen'] = $dokumen->file_dokumen;
-                $data['file_type'] = $dokumen->file_type;
-                $data['file_size'] = $dokumen->file_size;
-            } else {
-                return back()->with('error', 'Silakan upload file! (Tidak ada file yang tersimpan)')->withInput();
+                $this->deleteFile($dokumen->file_dokumen, 'iki');
+                $f = $this->uploadFile($request->file('edit_file'), 'iki');
+                $data += ['file_dokumen' => $f['name'], 'file_type' => $f['type'], 'file_size' => $f['size']];
             }
         }
 
         $dokumen->update($data);
-
         return redirect()->route('admin.iki.index', ['tahun' => $request->edit_tahun])
             ->with('success', 'Dokumen berhasil diupdate!');
     }
 
     public function destroy($id)
     {
-        $user = Auth::user();
         $dokumen = DokumenIki::findOrFail($id);
-
-        if ($user->isAdminDivisi() && $dokumen->divisi !== $user->divisi) {
-            abort(403, 'Anda hanya dapat mengelola dokumen divisi Anda.');
-        }
-
-        if ($dokumen->tipe_konten == 'file' && $dokumen->file_dokumen) {
-            Storage::disk('public')->delete('uploads/iki/'.$dokumen->file_dokumen);
-        }
-
+        $this->authorizeOwner($dokumen);
+        $this->deleteFile($dokumen->file_dokumen, 'iki');
         $dokumen->delete();
-
         return redirect()->route('admin.iki.index')->with('success', 'Dokumen berhasil dihapus!');
     }
 
     public function toggleStatus($id)
     {
-        $user = Auth::user();
         $dokumen = DokumenIki::findOrFail($id);
-
-        if ($user->isAdminDivisi() && $dokumen->divisi !== $user->divisi) {
-            abort(403, 'Anda hanya dapat mengelola dokumen divisi Anda.');
-        }
-
-        $new_status = $dokumen->status == 'aktif' ? 'nonaktif' : 'aktif';
-        $dokumen->update(['status' => $new_status]);
-
+        $this->authorizeOwner($dokumen);
+        $dokumen->update(['status' => $dokumen->status === 'aktif' ? 'nonaktif' : 'aktif']);
         return redirect()->route('admin.iki.index')->with('success', 'Status dokumen berhasil diubah!');
     }
 }

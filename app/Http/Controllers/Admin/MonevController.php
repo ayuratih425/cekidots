@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\MonevBulanan;
 use App\Models\MonevAkumulasi;
+use App\Models\SuratMasuk;
 use Illuminate\Support\Facades\DB;
 
 class MonevController extends Controller
@@ -43,43 +44,44 @@ class MonevController extends Controller
 
     protected function updateAkumulasiOtomatis($tahun)
     {
-        // Hapus data akumulasi lama
         MonevAkumulasi::where('tahun', $tahun)->delete();
-        
-        $data_bulanan = MonevBulanan::where('tahun', $tahun)->get();
-        
-        foreach ($data_bulanan as $row) {
-            $capaian_ik = 0;
-            if ($row->target_ik > 0) {
-                $capaian_ik = ($row->realisasi_ik / $row->target_ik) * 100;
-            }
-            
-            $capaian_keu = 0;
-            if ($row->target_keu > 0) {
-                $capaian_keu = ($row->realisasi_keu / $row->target_keu) * 100;
-            }
-            
-            $predikat_ik = $this->getPredikat($capaian_ik)['label'];
+
+        // Group by sub_kegiatan + indikator, akumulasi semua bulan
+        $grouped = MonevBulanan::where('tahun', $tahun)
+            ->get()
+            ->groupBy(fn ($r) => $r->sub_kegiatan . '|||' . $r->indikator);
+
+        foreach ($grouped as $key => $rows) {
+            $first = $rows->first();
+
+            // Ambil target dari bulan pertama (target biasanya tetap)
+            $target_ik  = (float) $first->target_ik;
+            $target_keu = (float) $first->target_keu;
+
+            // Akumulasi realisasi dari semua bulan
+            $realisasi_ik  = $rows->sum('realisasi_ik');
+            $realisasi_keu = $rows->sum('realisasi_keu');
+
+            $capaian_ik  = $target_ik  > 0 ? round(($realisasi_ik  / $target_ik)  * 100, 2) : 0;
+            $capaian_keu = $target_keu > 0 ? round(($realisasi_keu / $target_keu) * 100, 2) : 0;
+
+            $predikat_ik  = $this->getPredikat($capaian_ik)['label'];
             $predikat_keu = $this->getPredikat($capaian_keu)['label'];
-            
-            $status = 'Tidak Efisien';
-            if ($capaian_ik >= $capaian_keu) {
-                $status = 'Efisien';
-            }
-            
+            $status = $capaian_ik >= $capaian_keu ? 'Efisien' : 'Tidak Efisien';
+
             MonevAkumulasi::create([
-                'tahun' => $tahun,
-                'sub_kegiatan' => $row->sub_kegiatan,
-                'indikator' => $row->indikator,
-                'target_ik' => $row->target_ik,
-                'target_keu' => $row->target_keu,
-                'realisasi_ik' => $row->realisasi_ik,
-                'realisasi_keu' => $row->realisasi_keu,
-                'capaian_ik' => $capaian_ik,
-                'capaian_keu' => $capaian_keu,
-                'predikat_ik' => $predikat_ik,
-                'predikat_keu' => $predikat_keu,
-                'status' => $status,
+                'tahun'         => $tahun,
+                'sub_kegiatan'  => $first->sub_kegiatan,
+                'indikator'     => $first->indikator,
+                'target_ik'     => $target_ik,
+                'target_keu'    => $target_keu,
+                'realisasi_ik'  => $realisasi_ik,
+                'realisasi_keu' => $realisasi_keu,
+                'capaian_ik'    => $capaian_ik,
+                'capaian_keu'   => $capaian_keu,
+                'predikat_ik'   => $predikat_ik,
+                'predikat_keu'  => $predikat_keu,
+                'status'        => $status,
             ]);
         }
     }
@@ -102,7 +104,7 @@ class MonevController extends Controller
         }
         
         $tab_aktif = request('tab', 'bulanan');
-        $total_baru = \App\Models\SuratMasuk::where('status', 'baru')->count();
+        $total_baru = SuratMasuk::where('status', 'baru')->count();
         
         $data_bulanan = MonevBulanan::where('tahun', $tahun_aktif)
             ->where('bulan', $bulan_aktif)
@@ -167,12 +169,12 @@ class MonevController extends Controller
                 
                 $capaian_ik = 0;
                 if ($target_ik > 0) {
-                    $capaian_ik = ($realisasi_ik / $target_ik) * 100;
+                    $capaian_ik = round(($realisasi_ik / $target_ik) * 100, 2);
                 }
                 
                 $capaian_keu = 0;
                 if ($target_keu > 0) {
-                    $capaian_keu = ($realisasi_keu / $target_keu) * 100;
+                    $capaian_keu = round(($realisasi_keu / $target_keu) * 100, 2);
                 }
                 
                 MonevBulanan::create([

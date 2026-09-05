@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ArsipSurat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class ArsipSuratController extends Controller
@@ -36,16 +37,25 @@ class ArsipSuratController extends Controller
             $query->where('jenis_surat', $request->get('jenis'));
         }
 
-        $arsip = $query->paginate(15)->withQueryString();
+        // Group by jenis_surat untuk tampilan explorer
+        $arsipAll  = $query->get();
+        $byJenis   = $arsipAll->groupBy('jenis_surat');
+        $arsip     = $query->paginate(15)->withQueryString();
 
-        $totalMasuk    = ArsipSurat::aktif()->where('jenis_surat', 'masuk')->when($user->isAdminDivisi(), fn($q) => $q->where('divisi', $user->divisi))->count();
-        $totalKeluar   = ArsipSurat::aktif()->where('jenis_surat', 'keluar')->when($user->isAdminDivisi(), fn($q) => $q->where('divisi', $user->divisi))->count();
-        $totalInternal = ArsipSurat::aktif()->where('jenis_surat', 'internal')->when($user->isAdminDivisi(), fn($q) => $q->where('divisi', $user->divisi))->count();
-        $totalArsip    = $totalMasuk + $totalKeluar + $totalInternal;
+        $stats = ArsipSurat::aktif()
+            ->when($user->isAdminDivisi(), fn ($q) => $q->where('divisi', $user->divisi))
+            ->selectRaw("COUNT(*) as total, SUM(jenis_surat='masuk') as masuk, SUM(jenis_surat='keluar') as keluar, SUM(jenis_surat='internal') as internal")
+            ->first();
 
-        return view('admin.arsip-surat', compact(
-            'arsip', 'divisi_list', 'totalArsip', 'totalMasuk', 'totalKeluar', 'totalInternal'
-        ));
+        return view('admin.arsip-surat', [
+            'arsip'         => $arsip,
+            'byJenis'       => $byJenis,
+            'divisi_list'   => $divisi_list,
+            'totalArsip'    => $stats->total,
+            'totalMasuk'    => $stats->masuk,
+            'totalKeluar'   => $stats->keluar,
+            'totalInternal' => $stats->internal,
+        ]);
     }
 
     public function store(Request $request)
@@ -81,6 +91,10 @@ class ArsipSuratController extends Controller
             'is_deleted'    => false,
         ]);
 
+        // Hapus cache dashboard agar angka statistik langsung update
+        Cache::forget('dashboard_stats');
+        Cache::forget('dashboard_aktivitas');
+
         return redirect()->route('admin.arsip.index')->with('success', 'Arsip surat berhasil diunggah!');
     }
 
@@ -107,6 +121,8 @@ class ArsipSuratController extends Controller
         Storage::disk('public')->delete($arsip->file_path);
         $arsip->update(['is_deleted' => true]);
 
+        Cache::forget('dashboard_stats');
+
         return redirect()->route('admin.arsip.index')->with('success', 'Arsip surat berhasil dihapus!');
     }
 
@@ -125,7 +141,8 @@ class ArsipSuratController extends Controller
             $query->whereBetween('tanggal_surat', [$request->get('dari'), $request->get('sampai')]);
         }
 
-        $arsip      = $query->get();
+        // Batasi 500 data saat cetak — cegah server OOM kalau data ribuan
+        $arsip      = $query->limit(500)->get();
         $divisiNama = $user->isAdminDivisi() ? $user->divisi : ($request->get('divisi') ?? 'Semua Divisi');
 
         return view('admin.arsip-cetak', compact('arsip', 'divisiNama'));

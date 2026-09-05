@@ -80,21 +80,12 @@ class ManajemenUserController extends Controller
         return back()->with('success', 'Akun berhasil diupdate!');
     }
 
-    public function toggleActive(User $user)
-    {
-        if ($user->role === 'super_admin') {
-            return back()->with('error', 'Tidak bisa nonaktifkan super admin!');
-        }
-        return back()->with('error', 'Fitur ini tidak tersedia.');
-    }
-
     public function destroy(User $user)
     {
         if ($user->role === 'super_admin') {
             return back()->with('error', 'Tidak bisa hapus super admin!');
         }
         $user->delete();
-
         return back()->with('success', 'Akun berhasil dihapus!');
     }
 }

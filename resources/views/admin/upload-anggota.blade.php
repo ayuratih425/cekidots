@@ -38,6 +38,8 @@
     .btn-sm { padding:5px 12px; font-size:12px; }
     .btn-info { background:#dbeafe; color:#1d4ed8; }
     .btn-info:hover { background:#93c5fd; }
+    .btn-success { background:#d1fae5; color:#065f46; }
+    .btn-success:hover { background:#a7f3d0; }
     .btn-danger { background:#fef2f2; color:#dc2626; }
     .btn-danger:hover { background:#fecaca; }
 
@@ -49,6 +51,19 @@
     .data-table .empty-state { text-align:center; padding:48px 20px; color:#94a3b8; }
 
     .badge-divisi { display:inline-block; padding:2px 10px; border-radius:12px; font-size:11px; font-weight:600; background:#f1f5f9; color:#475569; }
+
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:9999; align-items:center; justify-content:center; padding:20px; }
+    .modal-overlay.show { display:flex; }
+    .modal-box { background:#fff; border-radius:16px; max-width:480px; width:100%; padding:28px; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
+    .modal-box h3 { font-size:16px; font-weight:700; color:#0f3b5e; margin-bottom:4px; display:flex; align-items:center; gap:8px; }
+    .modal-box h3 i { color:#eab308; }
+    .modal-field { margin-bottom:12px; }
+    .modal-field label { font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:4px; }
+    .modal-field input, .modal-field select, .modal-field textarea {
+        width:100%; padding:9px 12px; border:1.5px solid #e2e8f0; border-radius:8px;
+        font-size:13px; font-family:inherit; box-sizing:border-box;
+    }
+    .modal-field textarea { resize:vertical; }
 
     @media(max-width:768px) {
         .header { flex-direction:column; align-items:flex-start; }
@@ -179,9 +194,17 @@
                             </a>
                         </td>
                         <td>
-                            <a href="{{ route('admin.upload.destroy', $up->id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Hapus dokumen ini?')">
-                                <i class="fas fa-trash"></i>
-                            </a>
+                            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                                <button type="button" class="btn btn-sm btn-success"
+                                    onclick="openArsipModal({{ $up->id }}, '{{ addslashes($up->judul) }}')"
+                                    title="Arsipkan ke Arsip Surat">
+                                    <i class="fas fa-archive"></i> Arsipkan
+                                </button>
+                                <form method="POST" action="{{ route('admin.upload.destroy', $up->id) }}" style="display:inline;" onsubmit="return confirm('Hapus dokumen ini?')">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @empty
@@ -202,4 +225,59 @@
         @endif
     </div>
 </div>
+
+{{-- Modal Arsipkan --}}
+<div class="modal-overlay" id="arsipModal">
+    <div class="modal-box">
+        <h3><i class="fas fa-archive"></i> Arsipkan Dokumen</h3>
+        <p id="arsipJudul" style="font-size:13px; color:#64748b; margin-bottom:18px;"></p>
+        <form id="arsipForm" method="POST">
+            @csrf
+            <div class="modal-field">
+                <label>Nomor Surat <span style="color:#dc2626;">*</span></label>
+                <input type="text" name="nomor_surat" required placeholder="Contoh: 005/DISPAR/2025">
+            </div>
+            <div class="modal-field">
+                <label>Tanggal Surat <span style="color:#dc2626;">*</span></label>
+                <input type="date" name="tanggal_surat" required value="{{ date('Y-m-d') }}">
+            </div>
+            <div class="modal-field">
+                <label>Jenis Surat <span style="color:#dc2626;">*</span></label>
+                <select name="jenis_surat" required>
+                    <option value="masuk">Surat Masuk</option>
+                    <option value="keluar">Surat Keluar</option>
+                    <option value="internal">Surat Internal</option>
+                </select>
+            </div>
+            <div class="modal-field" style="margin-bottom:18px;">
+                <label>Keterangan</label>
+                <textarea name="keterangan" rows="2" placeholder="Keterangan tambahan (opsional)"></textarea>
+            </div>
+            <div style="display:flex; gap:10px; justify-content:flex-end;">
+                <button type="button" class="btn btn-secondary" onclick="closeArsipModal()">Batal</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-archive"></i> Simpan ke Arsip
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection
+
+@section('scripts')
+<script>
+function openArsipModal(uploadId, judul) {
+    document.getElementById('arsipJudul').textContent = 'Dokumen: ' + judul;
+    document.getElementById('arsipForm').action = '/admin/upload-anggota/' + uploadId + '/arsipkan';
+    document.getElementById('arsipModal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+}
+function closeArsipModal() {
+    document.getElementById('arsipModal').classList.remove('show');
+    document.body.style.overflow = 'auto';
+}
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeArsipModal();
+});
+</script>
 @endsection

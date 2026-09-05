@@ -19,7 +19,7 @@ class FolderDokumenController extends Controller
             $query->where(fn ($q) => $q->where('divisi', $user->divisi)->orWhere('divisi', 'Semua'));
         }
 
-        $folders = $query->orderBy('nama')->get();
+        $folders = $query->withCount('uploads')->orderBy('nama')->get();
         $total_baru = SuratMasuk::where('status', 'baru')->count();
         $divisi_list = ['Kepegawaian', 'Program', 'Keuangan', 'Ekraf', 'Destinasi', 'Pemasaran', 'Sdm', 'Semua'];
 

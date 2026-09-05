@@ -1,313 +1,247 @@
 @extends('layouts.admin')
-
 @section('title', 'Arsip Surat - CEKIDOT')
-
 @section('styles')
 <style>
-    .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:12px; }
-    .header h1 { font-size:24px; color:#0f3b5e; display:flex; align-items:center; gap:10px; }
-    .header h1 i { color:#eab308; }
-    .header .info { color:#64748b; font-size:14px; }
-    .alert { padding:12px 18px; border-radius:8px; margin-bottom:20px; display:flex; align-items:center; gap:10px; font-size:14px; }
-    .alert-success { background:#d1fae5; color:#065f46; border:1px solid #a7f3d0; }
-    .alert-danger  { background:#fef2f2; color:#991b1b; border:1px solid #fecaca; }
-    .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px; }
-    .stat-card { background:#fff; padding:18px 20px; border-radius:14px; border:1px solid #e8ecf1; display:flex; align-items:center; gap:14px; }
-    .stat-icon { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
-    .stat-icon.blue { background:#dbeafe; color:#1d4ed8; }
-    .stat-icon.green { background:#d1fae5; color:#065f46; }
-    .stat-icon.orange { background:#fef3c7; color:#b45309; }
-    .stat-icon.purple { background:#ede9fe; color:#7c3aed; }
-    .stat-info .number { font-size:26px; font-weight:800; color:#0f172a; line-height:1.2; }
-    .stat-info .label { font-size:13px; color:#94a3b8; margin-top:2px; }
-    .upload-form { background:#f8fafc; padding:24px; border-radius:12px; margin-bottom:24px; border:1px solid #e8ecf1; }
-    .upload-form h3 { font-size:15px; font-weight:700; color:#0f172a; display:flex; align-items:center; gap:8px; margin-bottom:16px; }
-    .upload-form h3 i { color:#eab308; }
-    .upload-form .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-    .upload-form .form-group { margin-bottom:0; }
-    .upload-form .form-group label { font-weight:600; font-size:13px; display:block; margin-bottom:4px; color:#1e293b; }
-    .upload-form .form-group label .required { color:#ef4444; }
-    .upload-form .form-group label .optional { color:#94a3b8; font-weight:400; font-size:11px; }
-    .upload-form .form-group input, .upload-form .form-group textarea, .upload-form .form-group select { width:100%; padding:8px 12px; border:1.5px solid #e2e8f0; border-radius:8px; font-size:13px; font-family:inherit; background:#fff; }
-    .upload-form .form-group textarea { min-height:60px; resize:vertical; }
-    .file-upload-wrapper { position:relative; width:100%; }
-    .file-upload-wrapper input[type="file"] { position:absolute; opacity:0; width:100%; height:100%; cursor:pointer; z-index:2; top:0; left:0; }
-    .file-upload-wrapper .file-label { display:block; padding:8px 12px; background:#fff; border:1.5px solid #e2e8f0; border-radius:8px; color:#475569; font-size:13px; text-align:center; cursor:pointer; min-height:38px; line-height:20px; }
-    .file-upload-wrapper .file-label i { margin-right:6px; color:#0f3b5e; }
-    .format-hint { display:block; font-size:11px; color:#94a3b8; margin-top:6px; }
-    .file-preview-wrapper { display:none; align-items:center; gap:10px; background:#f1f5f9; padding:6px 12px 6px 16px; border-radius:8px; margin-top:6px; border:1px solid #e2e8f0; }
-    .file-preview-wrapper.show { display:flex; }
-    .form-actions { margin-top:18px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
-    .btn-upload { padding:10px 28px; background:#0f3b5e; color:#fff; border:none; border-radius:8px; font-weight:600; font-size:14px; cursor:pointer; transition:all 0.3s; display:inline-flex; align-items:center; gap:8px; }
-    .btn-upload:hover { background:#0a2a44; }
-    .filter-bar { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px; align-items:center; }
-    .filter-bar form { display:flex; gap:10px; flex-wrap:wrap; flex:1; align-items:center; }
-    .filter-bar input[type="text"], .filter-bar select { padding:8px 12px; border:1.5px solid #e2e8f0; border-radius:8px; font-size:13px; font-family:inherit; background:#fff; }
-    .btn-filter { padding:8px 18px; background:#0f3b5e; color:#fff; border:none; border-radius:8px; font-weight:600; font-size:13px; cursor:pointer; transition:all 0.3s; display:inline-flex; align-items:center; gap:6px; text-decoration:none; }
-    .btn-filter:hover { background:#0a2a44; }
-    .btn-cetak { padding:8px 18px; background:#eab308; color:#fff; border:none; border-radius:8px; font-weight:600; font-size:13px; cursor:pointer; transition:all 0.3s; text-decoration:none; display:inline-flex; align-items:center; gap:6px; }
-    .btn-cetak:hover { background:#ca8a04; }
-    .table-wrapper { overflow-x:auto; border-radius:12px; border:1px solid #e8ecf1; background:#fff; }
-    table { width:100%; border-collapse:collapse; font-size:14px; min-width:700px; }
-    table th { text-align:left; padding:12px 16px; background:#f8fafc; font-weight:600; color:#1e293b; border-bottom:2px solid #e2e8f0; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; }
-    table td { padding:12px 16px; border-bottom:1px solid #f1f5f9; vertical-align:middle; }
-    table tr:hover td { background:#f8fafc; }
-    table tr:last-child td { border-bottom:none; }
-    .type-badge { display:inline-flex; align-items:center; gap:4px; padding:2px 10px; border-radius:12px; font-size:11px; font-weight:600; text-transform:capitalize; }
-    .type-badge.masuk { background:#dbeafe; color:#1d4ed8; }
-    .type-badge.keluar { background:#fef3c7; color:#b45309; }
-    .type-badge.internal { background:#ede9fe; color:#7c3aed; }
-    .divisi-badge { display:inline-flex; padding:2px 10px; border-radius:12px; font-size:11px; font-weight:600; background:#f1f5f9; color:#475569; }
-    .action-group { display:flex; gap:6px; align-items:center; }
-    .btn-action { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:6px; border:none; cursor:pointer; transition:all 0.3s; font-size:13px; text-decoration:none; }
-    .btn-action.btn-download { background:#d1fae5; color:#065f46; }
-    .btn-action.btn-download:hover { background:#a7f3d0; }
-    .btn-action.btn-delete { background:#fef2f2; color:#991b1b; }
-    .btn-action.btn-delete:hover { background:#fecaca; }
-    .empty-state { text-align:center; padding:40px 20px; color:#94a3b8; }
-    .empty-state i { font-size:40px; opacity:0.3; display:block; margin-bottom:12px; }
-    .empty-state h3 { font-size:17px; color:#1e293b; margin-bottom:4px; }
-    .pagination-info { padding:12px 16px; border-top:1px solid #f1f5f9; background:#f8fafc; font-size:12px; color:#64748b; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
-    .modal-overlay { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center; padding:20px; }
-    .modal-overlay.show { display:flex; }
-    .modal-box { background:#fff; border-radius:20px; max-width:420px; width:100%; padding:32px; box-shadow:0 30px 80px rgba(0,0,0,0.35); text-align:center; }
-    .modal-box .confirm-icon { font-size:56px; color:#dc2626; margin-bottom:12px; }
-    .modal-box h3 { font-size:20px; color:#1e293b; margin-bottom:4px; }
-    .modal-box p { color:#64748b; font-size:14px; margin-bottom:20px; }
-    .modal-box .modal-actions { display:flex; gap:12px; justify-content:center; }
-    .modal-box .modal-actions .btn { padding:10px 24px; border-radius:8px; font-weight:600; font-size:14px; border:none; cursor:pointer; transition:all 0.3s; text-decoration:none; display:inline-flex; align-items:center; gap:8px; }
-    .modal-box .modal-actions .btn-secondary { background:#f1f5f9; color:#1e293b; }
-    .modal-box .modal-actions .btn-danger { background:#dc2626; color:#fff; }
-    @media (max-width:992px) { .stats-grid { grid-template-columns:repeat(2,1fr); } .upload-form .form-grid { grid-template-columns:1fr; } }
-    @media (max-width:768px) { .stats-grid { grid-template-columns:1fr 1fr; gap:10px; } table { font-size:12px; min-width:600px; } }
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.page-header h1{font-size:22px;color:#0f3b5e;display:flex;align-items:center;gap:10px;margin:0}
+.page-header h1 i{color:#eab308}
+.alert{padding:12px 18px;border-radius:8px;margin-bottom:16px;display:flex;align-items:center;gap:10px;font-size:14px}
+.alert-success{background:#d1fae5;color:#065f46;border:1px solid #a7f3d0}
+.alert-danger{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.stat-box{background:#fff;border-radius:12px;border:1px solid #e8ecf1;padding:16px 18px;display:flex;align-items:center;gap:12px}
+.stat-box .ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.stat-box .ico.blue{background:#dbeafe;color:#1d4ed8}
+.stat-box .ico.green{background:#d1fae5;color:#065f46}
+.stat-box .ico.orange{background:#fef3c7;color:#b45309}
+.stat-box .ico.purple{background:#ede9fe;color:#7c3aed}
+.stat-box .num{font-size:22px;font-weight:800;color:#0f172a;line-height:1}
+.stat-box .lbl{font-size:12px;color:#94a3b8;margin-top:2px}
+.explorer-wrap{display:grid;grid-template-columns:220px 1fr;gap:0;background:#fff;border-radius:14px;border:1px solid #e2e8f0;overflow:hidden;min-height:500px}
+.explorer-sidebar{background:#f8fafc;border-right:1px solid #e2e8f0;padding:12px 0}
+.sidebar-title{font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.8px;padding:6px 16px 10px}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;font-size:13px;font-weight:500;color:#334155;transition:all 0.15s;border-left:3px solid transparent}
+.sidebar-item:hover{background:#eef2f7;color:#0f3b5e}
+.sidebar-item.active{background:#e0eaf4;color:#0f3b5e;font-weight:700;border-left-color:#0f3b5e}
+.sidebar-item i{width:16px;text-align:center}
+.sidebar-item .badge{margin-left:auto;background:#e2e8f0;color:#475569;font-size:10px;font-weight:700;padding:1px 8px;border-radius:10px}
+.sidebar-item.active .badge{background:#0f3b5e;color:#fff}
+.explorer-main{display:flex;flex-direction:column}
+.explorer-toolbar{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #f1f5f9;flex-wrap:wrap}
+.explorer-toolbar .path{font-size:13px;color:#64748b;display:flex;align-items:center;gap:6px;flex:1}
+.explorer-toolbar .path i{color:#eab308}
+.explorer-toolbar .path strong{color:#0f3b5e}
+.tb-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:7px;font-size:12px;font-weight:600;border:none;cursor:pointer;text-decoration:none;transition:all 0.2s}
+.tb-btn.primary{background:#0f3b5e;color:#fff}
+.tb-btn.primary:hover{background:#0a2a44}
+.tb-btn.gray{background:#f1f5f9;color:#334155}
+.tb-btn.gray:hover{background:#e2e8f0}
+.search-box{display:flex;align-items:center;border:1.5px solid #e2e8f0;border-radius:8px;overflow:hidden;background:#fff}
+.search-box input{border:none;outline:none;padding:6px 10px;font-size:13px;width:180px;font-family:inherit}
+.search-box button{background:#f1f5f9;border:none;padding:6px 10px;cursor:pointer;color:#64748b}
+.file-panel{flex:1;overflow-y:auto}
+.file-list-header{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 100px;gap:0;padding:8px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.4px}
+.file-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 100px;gap:0;padding:10px 16px;border-bottom:1px solid #f8fafc;align-items:center;transition:background 0.1s;font-size:13px}
+.file-row:hover{background:#f0f6ff}
+.file-row:last-child{border-bottom:none}
+.file-row .file-name{display:flex;align-items:center;gap:10px;font-weight:500;color:#1e293b}
+.file-row .file-name i{font-size:20px;flex-shrink:0}
+.file-row .file-name .meta{font-size:11px;color:#94a3b8;font-weight:400;margin-top:1px}
+.file-row .file-type span{padding:2px 10px;border-radius:10px;font-size:11px;font-weight:600}
+.file-row .file-type span.masuk{background:#dbeafe;color:#1d4ed8}
+.file-row .file-type span.keluar{background:#fef3c7;color:#b45309}
+.file-row .file-type span.internal{background:#ede9fe;color:#7c3aed}
+.file-row .actions{display:flex;gap:6px;justify-content:flex-end}
+.act-btn{width:28px;height:28px;border-radius:6px;border:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:12px;text-decoration:none;transition:all 0.2s}
+.act-btn.dl{background:#d1fae5;color:#065f46}
+.act-btn.dl:hover{background:#a7f3d0}
+.act-btn.del{background:#fef2f2;color:#dc2626}
+.act-btn.del:hover{background:#fecaca}
+.empty-folder{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;color:#94a3b8}
+.empty-folder i{font-size:48px;opacity:0.2;margin-bottom:12px}
+.upload-panel{padding:20px;border-top:1px solid #e2e8f0;background:#fafbfc}
+.upload-panel h4{font-size:14px;font-weight:700;color:#0f3b5e;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.upload-panel h4 i{color:#eab308}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.form-row.full{grid-template-columns:1fr}
+.fg label{font-size:12px;font-weight:600;color:#334155;display:block;margin-bottom:4px}
+.fg input,.fg select,.fg textarea{width:100%;padding:7px 10px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:13px;font-family:inherit;background:#fff}
+.fg input:focus,.fg select:focus{outline:none;border-color:#0f3b5e}
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);z-index:9999;align-items:center;justify-content:center;padding:20px}
+.modal-ov.show{display:flex}
+.modal-bx{background:#fff;border-radius:16px;max-width:400px;width:100%;padding:28px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.25)}
+.modal-bx .ico-del{font-size:48px;color:#dc2626;margin-bottom:10px}
+.modal-bx h3{font-size:18px;color:#1e293b;margin-bottom:6px}
+.modal-bx p{font-size:13px;color:#64748b;margin-bottom:20px}
+.modal-bx .acts{display:flex;gap:10px;justify-content:center}
+.modal-bx .acts button,.modal-bx .acts a{padding:9px 22px;border-radius:8px;font-weight:600;font-size:13px;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.modal-bx .acts .cancel{background:#f1f5f9;color:#334155}
+.modal-bx .acts .confirm{background:#dc2626;color:#fff}
+@media(max-width:992px){.stats-row{grid-template-columns:repeat(2,1fr)}.explorer-wrap{grid-template-columns:1fr}.explorer-sidebar{border-right:none;border-bottom:1px solid #e2e8f0;display:flex;flex-wrap:wrap;padding:8px}.sidebar-item{border-left:none;border-radius:8px}.file-list-header{display:none}.file-row{grid-template-columns:1fr;gap:4px;padding:12px 16px}.file-row>div:not(.file-name){padding-left:30px;font-size:12px}.file-row .actions{padding-left:0;justify-content:flex-start;margin-top:6px}}
 </style>
 @endsection
 
 @section('content')
 @php $user = auth()->user(); @endphp
 
-<div class="header">
+<div class="page-header">
     <div>
         <h1><i class="fas fa-archive"></i> Arsip Surat</h1>
-        <span class="info">
-            @if($user->isSuperAdmin()) Kelola arsip surat seluruh divisi
-            @else Arsip surat divisi {{ $user->divisi ?? '-' }}
-            @endif
-        </span>
+        <span style="font-size:13px;color:#64748b;">{{ $user->isSuperAdmin() ? 'Semua Divisi' : 'Divisi '.$user->divisi }}</span>
     </div>
-    <div style="font-size:14px; color:#64748b;">
-        <i class="fas fa-user-circle" style="color:#eab308;"></i> {{ $user->nama_admin ?? 'Admin' }}
-    </div>
+    <div style="font-size:13px;color:#64748b;"><i class="fas fa-user-circle" style="color:#eab308"></i> {{ $user->nama_admin }}</div>
 </div>
 
 @if(session('success'))<div class="alert alert-success"><i class="fas fa-check-circle"></i> {{ session('success') }}</div>@endif
 @if(session('error'))<div class="alert alert-danger"><i class="fas fa-exclamation-circle"></i> {{ session('error') }}</div>@endif
 @if($errors->any())<div class="alert alert-danger"><i class="fas fa-exclamation-circle"></i> {{ $errors->first() }}</div>@endif
 
-<!-- Stats -->
-<div class="stats-grid">
-    <div class="stat-card">
-        <div class="stat-icon blue"><i class="fas fa-file-alt"></i></div>
-        <div class="stat-info"><div class="number">{{ $totalArsip }}</div><div class="label">Total Arsip</div></div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-icon green"><i class="fas fa-arrow-down"></i></div>
-        <div class="stat-info"><div class="number">{{ $totalMasuk }}</div><div class="label">Surat Masuk</div></div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-icon orange"><i class="fas fa-arrow-up"></i></div>
-        <div class="stat-info"><div class="number">{{ $totalKeluar }}</div><div class="label">Surat Keluar</div></div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-icon purple"><i class="fas fa-folder"></i></div>
-        <div class="stat-info"><div class="number">{{ $totalInternal }}</div><div class="label">Surat Internal</div></div>
-    </div>
+<div class="stats-row">
+    <div class="stat-box"><div class="ico blue"><i class="fas fa-file-alt"></i></div><div><div class="num">{{ $totalArsip }}</div><div class="lbl">Total Arsip</div></div></div>
+    <div class="stat-box"><div class="ico green"><i class="fas fa-arrow-down"></i></div><div><div class="num">{{ $totalMasuk }}</div><div class="lbl">Surat Masuk</div></div></div>
+    <div class="stat-box"><div class="ico orange"><i class="fas fa-arrow-up"></i></div><div><div class="num">{{ $totalKeluar }}</div><div class="lbl">Surat Keluar</div></div></div>
+    <div class="stat-box"><div class="ico purple"><i class="fas fa-folder"></i></div><div><div class="num">{{ $totalInternal }}</div><div class="lbl">Internal</div></div></div>
 </div>
 
-<!-- Upload Form -->
-<div class="upload-form">
-    <h3><i class="fas fa-cloud-upload-alt"></i> Upload Arsip Surat</h3>
-    <form method="POST" action="{{ route('admin.arsip.store') }}" enctype="multipart/form-data">
-        @csrf
-        <div class="form-grid">
-            <div class="form-group">
-                <label>Nomor Surat <span class="required">*</span></label>
-                <input type="text" name="nomor_surat" placeholder="Contoh: 005/DISPAR/2026" required>
-            </div>
-            <div class="form-group">
-                <label>Tanggal Surat <span class="required">*</span></label>
-                <input type="date" name="tanggal_surat" required>
-            </div>
-            <div class="form-group" style="grid-column:1/-1;">
-                <label>Perihal <span class="required">*</span></label>
-                <input type="text" name="perihal" placeholder="Perihal surat" required>
-            </div>
-            <div class="form-group">
-                <label>Jenis Surat <span class="required">*</span></label>
-                <select name="jenis_surat" required>
-                    <option value="masuk">Masuk</option>
-                    <option value="keluar">Keluar</option>
-                    <option value="internal">Internal</option>
-                </select>
-            </div>
-            @if($user->isSuperAdmin())
-            <div class="form-group">
-                <label>Divisi <span class="required">*</span></label>
-                <select name="divisi" required>
-                    <option value="">-- Pilih Divisi --</option>
-                    @foreach($divisi_list as $d)
-                    <option value="{{ $d }}">{{ $d }}</option>
-                    @endforeach
-                </select>
-            </div>
-            @endif
-            <div class="form-group">
-                <label>File Surat <span class="required">*</span> <span class="optional">(Maks 10MB)</span></label>
-                <div class="file-upload-wrapper">
-                    <input type="file" name="file_surat" id="fileSurat" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" required>
-                    <span class="file-label"><i class="fas fa-cloud-upload-alt"></i> Pilih File (PDF, JPG, PNG, DOC, DOCX)</span>
-                </div>
-                <span class="format-hint"><i class="fas fa-info-circle"></i> Format: PDF, JPG, PNG, DOC, DOCX | Maks 10MB</span>
-                <div class="file-preview-wrapper" id="filePreview">
-                    <span style="font-size:18px; color:#0f3b5e;"><i class="fas fa-file"></i></span>
-                    <span id="fileName">-</span>
-                </div>
-            </div>
-            <div class="form-group" style="grid-column:1/-1;">
-                <label>Keterangan <span class="optional">(Opsional)</span></label>
-                <textarea name="keterangan" placeholder="Keterangan tambahan..."></textarea>
-            </div>
+<div class="explorer-wrap">
+    <div class="explorer-sidebar">
+        <div class="sidebar-title">Folder Arsip</div>
+        <div class="sidebar-item active" data-folder="semua" onclick="switchFolder('semua',this)">
+            <i class="fas fa-folder-open" style="color:#eab308"></i> Semua
+            <span class="badge">{{ $totalArsip }}</span>
         </div>
-        <div class="form-actions">
-            <button type="submit" class="btn-upload"><i class="fas fa-upload"></i> Simpan Arsip</button>
+        <div class="sidebar-item" data-folder="masuk" onclick="switchFolder('masuk',this)">
+            <i class="fas fa-arrow-down" style="color:#1d4ed8"></i> Surat Masuk
+            <span class="badge">{{ $totalMasuk }}</span>
         </div>
-    </form>
-</div>
-
-<!-- Filter -->
-<div class="filter-bar">
-    <form method="GET" action="{{ route('admin.arsip.index') }}">
-        <input type="text" name="search" placeholder="Cari nomor, perihal..." value="{{ request('search') }}">
+        <div class="sidebar-item" data-folder="keluar" onclick="switchFolder('keluar',this)">
+            <i class="fas fa-arrow-up" style="color:#b45309"></i> Surat Keluar
+            <span class="badge">{{ $totalKeluar }}</span>
+        </div>
+        <div class="sidebar-item" data-folder="internal" onclick="switchFolder('internal',this)">
+            <i class="fas fa-folder" style="color:#7c3aed"></i> Internal
+            <span class="badge">{{ $totalInternal }}</span>
+        </div>
+        <div class="sidebar-title" style="margin-top:12px">Aksi</div>
+        <div class="sidebar-item" onclick="toggleUpload()">
+            <i class="fas fa-cloud-upload-alt" style="color:#0f3b5e"></i> Upload Arsip
+        </div>
         @if($user->isSuperAdmin())
-        <select name="divisi">
-            <option value="">Semua Divisi</option>
-            @foreach($divisi_list as $d)
-            <option value="{{ $d }}" {{ request('divisi') == $d ? 'selected' : '' }}>{{ $d }}</option>
-            @endforeach
-        </select>
+        <div class="sidebar-item" onclick="window.open('{{ route('admin.arsip.cetak') }}','_blank')">
+            <i class="fas fa-print" style="color:#065f46"></i> Cetak Laporan
+        </div>
         @endif
-        <select name="jenis">
-            <option value="">Semua Jenis</option>
-            <option value="masuk" {{ request('jenis') == 'masuk' ? 'selected' : '' }}>Masuk</option>
-            <option value="keluar" {{ request('jenis') == 'keluar' ? 'selected' : '' }}>Keluar</option>
-            <option value="internal" {{ request('jenis') == 'internal' ? 'selected' : '' }}>Internal</option>
-        </select>
-        <button type="submit" class="btn-filter"><i class="fas fa-search"></i> Cari</button>
-        @if(request('search') || request('divisi') || request('jenis'))
-        <a href="{{ route('admin.arsip.index') }}" class="btn-filter" style="background:#64748b;"><i class="fas fa-times"></i> Reset</a>
-        @endif
-    </form>
-    @if($user->isSuperAdmin())
-    <a href="{{ route('admin.arsip.cetak', request()->only(['divisi'])) }}" class="btn-cetak" target="_blank">
-        <i class="fas fa-print"></i> Cetak Laporan
-    </a>
-    @endif
-</div>
+    </div>
 
-<!-- Table -->
-<div class="table-wrapper">
-    <table>
-        <thead>
-            <tr>
-                <th style="width:40px;">#</th>
-                <th>Nomor Surat</th>
-                <th>Perihal</th>
-                <th>Tanggal</th>
-                @if($user->isSuperAdmin())<th>Divisi</th>@endif
-                <th>Jenis</th>
-                <th>File</th>
-                <th style="width:90px;">Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if($arsip->isEmpty())
-            <tr>
-                <td colspan="{{ $user->isSuperAdmin() ? 8 : 7 }}">
-                    <div class="empty-state">
-                        <i class="fas fa-archive"></i>
-                        <h3>Belum Ada Arsip</h3>
-                        <p>Belum ada arsip surat yang diunggah untuk divisi {{ $user->divisi ?? 'ini' }}</p>
+    <div class="explorer-main">
+        <div class="explorer-toolbar">
+            <div class="path"><i class="fas fa-hdd"></i> Arsip &rsaquo; <strong id="pathLabel">Semua</strong></div>
+            <form method="GET" action="{{ route('admin.arsip.index') }}" style="display:flex;gap:6px;align-items:center;">
+                <div class="search-box">
+                    <input type="text" name="search" placeholder="Cari arsip..." value="{{ request('search') }}">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </div>
+                @if(request('search'))<a href="{{ route('admin.arsip.index') }}" class="tb-btn gray"><i class="fas fa-times"></i></a>@endif
+            </form>
+        </div>
+
+        <div class="file-panel">
+            <div class="file-list-header">
+                <div>Nama / Perihal</div>
+                <div>Nomor Surat</div>
+                <div>Jenis</div>
+                <div>Tanggal</div>
+                <div style="text-align:right">Aksi</div>
+            </div>
+
+            @php
+                $grouped = ['semua' => $arsip->items(), 'masuk' => [], 'keluar' => [], 'internal' => []];
+                foreach($arsip->items() as $s) { $grouped[$s->jenis_surat][] = $s; }
+            @endphp
+
+            @foreach(['semua','masuk','keluar','internal'] as $folder)
+            <div class="folder-content" id="folder-{{ $folder }}" style="{{ $folder !== 'semua' ? 'display:none' : '' }}">
+                @if(empty($grouped[$folder]))
+                <div class="empty-folder"><i class="fas fa-folder-open"></i><p>Folder kosong</p></div>
+                @else
+                @foreach($grouped[$folder] as $s)
+                @php $ext = strtolower(pathinfo($s->file_name, PATHINFO_EXTENSION)); @endphp
+                <div class="file-row">
+                    <div class="file-name">
+                        <i class="fas fa-file-{{ $ext==='pdf' ? 'pdf' : (in_array($ext,['jpg','jpeg','png']) ? 'image' : 'alt') }}" style="color:{{ $ext==='pdf' ? '#dc2626' : '#0f3b5e' }}"></i>
+                        <div>
+                            <div>{{ $s->perihal }}</div>
+                            <div class="meta">{{ $s->file_name }} &bull; {{ $s->file_size ? number_format($s->file_size/1024,1).'KB' : '-' }} &bull; {{ $s->uploader->nama_admin ?? '-' }}</div>
+                        </div>
                     </div>
-                </td>
-            </tr>
-            @else
-            @php $no = $arsip->firstItem(); @endphp
-            @foreach($arsip as $s)
-            <tr>
-                <td>{{ $no++ }}</td>
-                <td style="font-weight:500;">{{ $s->nomor_surat }}</td>
-                <td>
-                    <div style="font-weight:500;">{{ $s->perihal }}</div>
-                    @if($s->keterangan)
-                    <div style="font-size:12px; color:#64748b;">{{ substr($s->keterangan, 0, 50) }}{{ strlen($s->keterangan) > 50 ? '...' : '' }}</div>
-                    @endif
-                </td>
-                <td>{{ $s->tanggal_surat->format('d M Y') }}</td>
-                @if($user->isSuperAdmin())
-                <td><span class="divisi-badge">{{ $s->divisi ?? '-' }}</span></td>
-                @endif
-                <td>
-                    <span class="type-badge {{ $s->jenis_surat }}">
-                        <i class="fas {{ $s->jenis_surat == 'masuk' ? 'fa-arrow-down' : ($s->jenis_surat == 'keluar' ? 'fa-arrow-up' : 'fa-folder-open') }}"></i>
-                        {{ $s->jenis_surat }}
-                    </span>
-                    @if($s->file_size)
-                    <span style="font-size:10px; color:#94a3b8; display:block;">{{ number_format($s->file_size / 1024, 1) }} KB</span>
-                    @endif
-                </td>
-                <td>
-                    <span style="font-size:12px; color:#475569; word-break:break-all;">{{ $s->file_name }}</span>
-                    @if($s->uploader)
-                    <span style="font-size:11px; color:#94a3b8; display:block;">Oleh: {{ $s->uploader->nama_admin }}</span>
-                    @endif
-                </td>
-                <td>
-                    <div class="action-group">
-                        <a href="{{ route('admin.arsip.download', $s->id) }}" class="btn-action btn-download" title="Unduh">
-                            <i class="fas fa-download"></i>
-                        </a>
+                    <div style="font-size:13px;color:#475569;">{{ $s->nomor_surat }}</div>
+                    <div class="file-type"><span class="{{ $s->jenis_surat }}">{{ ucfirst($s->jenis_surat) }}</span></div>
+                    <div style="font-size:13px;color:#475569;">{{ $s->tanggal_surat->format('d M Y') }}</div>
+                    <div class="actions">
+                        <a href="{{ route('admin.arsip.download', $s->id) }}" class="act-btn dl" title="Unduh"><i class="fas fa-download"></i></a>
                         @if($user->isSuperAdmin() || $s->uploaded_by === $user->id)
-                        <button class="btn-action btn-delete" onclick="openDeleteModal({{ $s->id }}, '{{ addslashes($s->nomor_surat) }}')" title="Hapus">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <button class="act-btn del" onclick="openDel({{ $s->id }},'{{ addslashes($s->nomor_surat) }}')" title="Hapus"><i class="fas fa-trash"></i></button>
                         @endif
                     </div>
-                </td>
-            </tr>
+                </div>
+                @endforeach
+                @endif
+            </div>
             @endforeach
-            @endif
-        </tbody>
-    </table>
-    @if($arsip->hasPages())
-    <div class="pagination-info">
-        <span>Menampilkan {{ $arsip->firstItem() }} - {{ $arsip->lastItem() }} dari {{ $arsip->total() }} arsip</span>
-        <div>{!! $arsip->links() !!}</div>
+        </div>
+
+        <div class="upload-panel" id="uploadPanel" style="display:none">
+            <h4><i class="fas fa-cloud-upload-alt"></i> Upload Arsip Baru</h4>
+            <form method="POST" action="{{ route('admin.arsip.store') }}" enctype="multipart/form-data">
+                @csrf
+                <div class="form-row">
+                    <div class="fg"><label>Nomor Surat *</label><input type="text" name="nomor_surat" required placeholder="005/DISPAR/2026"></div>
+                    <div class="fg"><label>Tanggal Surat *</label><input type="date" name="tanggal_surat" required></div>
+                </div>
+                <div class="form-row full">
+                    <div class="fg"><label>Perihal *</label><input type="text" name="perihal" required placeholder="Perihal surat"></div>
+                </div>
+                <div class="form-row">
+                    <div class="fg"><label>Jenis Surat *</label>
+                        <select name="jenis_surat" required>
+                            <option value="masuk">Masuk</option>
+                            <option value="keluar">Keluar</option>
+                            <option value="internal">Internal</option>
+                        </select>
+                    </div>
+                    @if($user->isSuperAdmin())
+                    <div class="fg"><label>Divisi *</label>
+                        <select name="divisi" required>
+                            <option value="">-- Pilih --</option>
+                            @foreach($divisi_list as $d)<option value="{{ $d }}">{{ $d }}</option>@endforeach
+                        </select>
+                    </div>
+                    @endif
+                </div>
+                <div class="form-row">
+                    <div class="fg"><label>File * (PDF/JPG/PNG/DOC, maks 10MB)</label><input type="file" name="file_surat" required accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"></div>
+                    <div class="fg"><label>Keterangan</label><input type="text" name="keterangan" placeholder="Opsional"></div>
+                </div>
+                <div style="display:flex;gap:10px;margin-top:8px">
+                    <button type="submit" class="tb-btn primary"><i class="fas fa-save"></i> Simpan</button>
+                    <button type="button" class="tb-btn gray" onclick="toggleUpload()">Batal</button>
+                </div>
+            </form>
+        </div>
     </div>
-    @endif
 </div>
 
-<!-- Modal Delete -->
-<div class="modal-overlay" id="deleteModal">
-    <div class="modal-box">
-        <div class="confirm-icon"><i class="fas fa-trash-alt"></i></div>
+<div class="modal-ov" id="delModal">
+    <div class="modal-bx">
+        <div class="ico-del"><i class="fas fa-trash-alt"></i></div>
         <h3>Hapus Arsip?</h3>
-        <p id="deleteMessage">Apakah Anda yakin ingin menghapus arsip ini?</p>
+        <p id="delMsg">Tindakan ini tidak dapat dibatalkan.</p>
         <form method="POST" action="{{ route('admin.arsip.destroy') }}">
             @csrf
-            <input type="hidden" name="delete_id" id="deleteId">
-            <div class="modal-actions">
-                <button type="button" class="btn btn-secondary" onclick="closeModal('deleteModal')">Batal</button>
-                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Hapus</button>
+            <input type="hidden" name="delete_id" id="delId">
+            <div class="acts">
+                <button type="button" class="cancel" onclick="closeDel()">Batal</button>
+                <button type="submit" class="confirm"><i class="fas fa-trash"></i> Hapus</button>
             </div>
         </form>
     </div>
@@ -316,27 +250,32 @@
 
 @section('scripts')
 <script>
-function openDeleteModal(id, nomor) {
-    document.getElementById('deleteId').value = id;
-    document.getElementById('deleteMessage').textContent = 'Hapus arsip "' + nomor + '"? Tindakan ini tidak dapat dibatalkan.';
-    document.getElementById('deleteModal').classList.add('show');
-    document.body.style.overflow = 'hidden';
+var labels={semua:"Semua",masuk:"Surat Masuk",keluar:"Surat Keluar",internal:"Internal"};
+function switchFolder(f,el){
+    document.querySelectorAll(".sidebar-item").forEach(function(i){i.classList.remove("active")});
+    el.classList.add("active");
+    document.querySelectorAll(".folder-content").forEach(function(d){d.style.display="none"});
+    document.getElementById("folder-"+f).style.display="block";
+    document.getElementById("pathLabel").textContent=labels[f];
 }
-function closeModal(id) {
-    document.getElementById(id).classList.remove('show');
-    document.body.style.overflow = 'auto';
+function toggleUpload(){
+    var p=document.getElementById("uploadPanel");
+    p.style.display=p.style.display==="none"?"block":"none";
 }
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.show').forEach(el => { el.classList.remove('show'); document.body.style.overflow = 'auto'; });
-});
-document.addEventListener('DOMContentLoaded', function() {
-    var fi = document.getElementById('fileSurat');
-    if (fi) fi.addEventListener('change', function() {
-        if (this.files && this.files[0]) {
-            document.getElementById('fileName').textContent = this.files[0].name;
-            document.getElementById('filePreview').classList.add('show');
-        }
-    });
+function openDel(id,nomor){
+    document.getElementById("delId").value=id;
+    document.getElementById("delMsg").textContent="Hapus arsip \""+nomor+"\"?";
+    document.getElementById("delModal").classList.add("show");
+    document.body.style.overflow="hidden";
+}
+function closeDel(){
+    document.getElementById("delModal").classList.remove("show");
+    document.body.style.overflow="auto";
+}
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeDel()});
+document.addEventListener("DOMContentLoaded",function(){
+    var alerts=document.querySelectorAll(".alert");
+    alerts.forEach(function(a){setTimeout(function(){a.style.transition="opacity 0.5s";a.style.opacity="0";setTimeout(function(){a.remove()},500)},3000)});
 });
 </script>
 @endsection

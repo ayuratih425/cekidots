@@ -11,7 +11,10 @@ class SliderSeeder extends Seeder
     {
         DB::table('sliders')->truncate();
         DB::table('sliders')->insert([
-            ['id' => 32, 'gambar' => '1785256060_Cekidot.png', 'judul' => 'Slide', 'urutan' => 1, 'status' => 'aktif', 'created_at' => '2026-07-29 00:27:40'],
+            ['gambar' => '1785256060_Cekidot.png', 'judul' => 'Slide Utama', 'urutan' => 1, 'status' => 'aktif', 'created_at' => now()],
+            ['gambar' => 'slide.png',               'judul' => 'Slide 1',     'urutan' => 2, 'status' => 'aktif', 'created_at' => now()],
+            ['gambar' => 'slide2.png',              'judul' => 'Slide 2',     'urutan' => 3, 'status' => 'aktif', 'created_at' => now()],
+            ['gambar' => 'slide3.png',              'judul' => 'Slide 3',     'urutan' => 4, 'status' => 'aktif', 'created_at' => now()],
         ]);
     }
 }
