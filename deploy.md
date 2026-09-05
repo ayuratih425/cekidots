@@ -1,85 +1,125 @@
-# Panduan Deploy ke cPanel
+# PANDUAN DEPLOY CEKIDOT KE cPANEL
 
-## Alur Kerja Sehari-hari
+## SEBELUM PUSH KE GITHUB
 
-```
-Lokal (development)
-    ↓ git add . && git commit -m "..." && git push
-GitHub (kode saja, tanpa file uploads)
-    ↓ download zip dari GitHub / git pull di server
-cPanel (production)
-```
-
-## Yang Masuk GitHub ✅
-- Semua kode PHP (app/, routes/, resources/, config/, database/)
-- File konfigurasi (.env.example, composer.json, dll)
-- **TIDAK termasuk file uploads** (sudah di .gitignore)
-
-## Yang TIDAK Masuk GitHub ❌
-```
-storage/app/public/uploads/   ← file PDF/dokumen user
-vendor/
-node_modules/
-.env
-public/storage (symlink)
-```
+Pastikan file-file ini TIDAK ikut di-push:
+- .env (sudah di .gitignore ✅)
+- /storage/app/public/uploads (sudah di .gitignore ✅)
+- /vendor (sudah di .gitignore ✅)
+- /node_modules (sudah di .gitignore ✅)
 
 ---
 
-## Cara Deploy ke cPanel
+## LANGKAH DEPLOY DI cPANEL
 
-### Pertama kali (fresh install):
+### 1. Upload File
+- Upload semua file ke folder `public_html/cekidot` (atau root jika domain utama)
+- JANGAN upload folder: vendor, node_modules, storage/app/public/uploads
 
-1. Di cPanel File Manager, upload semua file kode
-2. Buka cPanel Terminal:
+### 2. Buat .env di Server
+Buat file `.env` berdasarkan `.env.production.example`, isi dengan:
+```
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://yourdomain.com
+DB_DATABASE=nama_db_cpanel
+DB_USERNAME=user_db_cpanel
+DB_PASSWORD=password_db_cpanel
+SESSION_ENCRYPT=true
+SESSION_SECURE_COOKIE=true
+```
+
+### 3. Install Dependencies via SSH
 ```bash
-cd ~/public_html
-composer install --no-dev --optimize-autoloader
-cp .env.example .env
-# Edit .env: isi DB_*, APP_URL, APP_KEY
+composer install --optimize-autoloader --no-dev
+```
+
+### 4. Generate Key (jika belum ada)
+```bash
 php artisan key:generate
-php artisan migrate --force
-php artisan storage:link
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
 ```
 
-### Update berikutnya (sudah ada data):
-
-1. Download zip dari GitHub (Code → Download ZIP)
-2. Extract di lokal, **hapus folder** `storage/app/public/uploads/` dari hasil extract
-3. Upload ke cPanel (timpa file lama)
-4. Di cPanel Terminal:
+### 5. Jalankan Migrasi
 ```bash
-cd ~/public_html
-composer install --no-dev --optimize-autoloader
 php artisan migrate --force
+```
+
+### 6. Buat Storage Link
+```bash
+php artisan storage:link
+```
+
+### 7. Buat folder uploads manual
+```bash
+mkdir -p storage/app/public/uploads/slider
+mkdir -p storage/app/public/uploads/anggota
+mkdir -p storage/app/public/uploads/akip
+mkdir -p storage/app/public/uploads/iki
+mkdir -p storage/app/public/arsip
+```
+
+### 8. Set Permission
+```bash
+chmod -R 775 storage
+chmod -R 775 bootstrap/cache
+```
+
+### 9. Optimasi Cache Production
+```bash
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
+php artisan optimize
 ```
 
-**JANGAN jalankan `storage:link` lagi kalau sudah ada** — cukup sekali.
+### 10. Upload Gambar Slider Manual
+Upload file-file ini ke `storage/app/public/uploads/slider/`:
+- 1785256060_Cekidot.png
+- slide.png
+- slide2.png
+- slide3.png
+
+### 11. Seed Data Awal (jika database baru)
+```bash
+php artisan db:seed --class=UserSeeder
+php artisan db:seed --class=SliderSeeder
+```
 
 ---
 
-## Aturan Penting
+## KONFIGURASI cPANEL TAMBAHAN
 
-- **Jangan pernah hapus** `storage/app/public/uploads/` di server
-- **Jangan pernah** `php artisan migrate:fresh` di production (data hilang)
-- Sebelum deploy, backup database dulu via cPanel → phpMyAdmin → Export
+### Document Root
+Arahkan document root ke folder `public/` bukan root project.
+Di cPanel: Domains → Manage → Document Root → ubah ke `/public_html/cekidot/public`
+
+### PHP Version
+Gunakan PHP 8.2 atau 8.3
+
+### PHP Extensions yang dibutuhkan
+- pdo_mysql
+- mbstring
+- openssl
+- tokenizer
+- xml
+- ctype
+- json
+- bcmath
+- fileinfo
 
 ---
 
-## Limit Upload File
+## SETELAH DEPLOY — CEK INI
 
-| Tipe | Limit |
-|------|-------|
-| Dokumen Anggota | 10 MB |
-| Dokumen AKIP | 10 MB |
-| Dokumen IKI | 10 MB |
-| Slider | 2 MB |
-| Surat Masuk | 5 MB |
+- [ ] Buka web, pastikan tidak ada error
+- [ ] Login admin berhasil
+- [ ] Upload file berhasil
+- [ ] Slider tampil
+- [ ] APP_DEBUG=false (tidak ada stack trace di error)
+- [ ] HTTPS aktif (gembok hijau di browser)
 
-Format yang diizinkan: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPG, PNG, ZIP, RAR
+---
+
+## AKUN DEFAULT ADMIN
+Username: admin
+Password: (sesuai UserSeeder)
