@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Waktu pembuatan: 23 Agu 2026 pada 17.10
+-- Waktu pembuatan: 05 Sep 2026 pada 17.32
 -- Versi server: 10.11.14-MariaDB-cll-lve
 -- Versi PHP: 8.4.24
 
@@ -650,7 +650,9 @@ CREATE TABLE `surat_masuk` (
 
 INSERT INTO `surat_masuk` (`id`, `nomor_surat`, `tanggal_surat`, `asal_instansi`, `nama_pengirim`, `no_hp`, `perihal`, `keterangan`, `file_surat`, `tanggal_masuk`, `ip_address`, `status`, `dibaca`) VALUES
 (8, '009.B.BSB.FH-UTD.I.2026', '2026-08-03', 'BENGKEL SENI BALIA,FAKULTAS HUKUM UNTAD', 'ANANDYA PRADIPTA PUTRA', '08226951750', 'PEMINJAMAN ALAT', 'Peminjaman alat untuk kebutuhan penampilan TADULAKO LAW FESTIVAL', '1785735372_suratpeminjamanbsb2.pdf', '2026-08-03 12:36:12', '36.79.235.47', 'dibaca', 1),
-(10, '09/B/PAN-PEL/UPHDM-UNTAD/VIII/2026', '2026-08-17', 'Unit Pengkajian Hindu Dharma Mahasiswa Universitas Tadulako', 'Gangga Honesty', '082290199143', 'Permohonan Peminjaman Pakaian', 'Permohonan Peminjaman Pakaian', '1787054886_09SURATPEMINJAMANBAJUADATBUOL.pdf', '2026-08-18 19:08:06', '182.2.235.79', 'baru', 0);
+(10, '09/B/PAN-PEL/UPHDM-UNTAD/VIII/2026', '2026-08-17', 'Unit Pengkajian Hindu Dharma Mahasiswa Universitas Tadulako', 'Gangga Honesty', '082290199143', 'Permohonan Peminjaman Pakaian', 'Permohonan Peminjaman Pakaian', '1787054886_09SURATPEMINJAMANBAJUADATBUOL.pdf', '2026-08-18 19:08:06', '182.2.235.79', 'baru', 0),
+(11, '19319/UN28.6/TU/2026', '2026-08-24', 'Universitas Tadulako', 'Reihan Abta Afghani', '081229794347', 'Permohonan Kerja Praktek', '', '1787531542_F521230341.pdf', '2026-08-24 07:32:22', '182.1.187.240', 'baru', 0),
+(12, '002/genpi', '2026-08-31', 'Generasi pesona Indonesia provinsi Sulawesi tengah', 'Abdul Rahman', '08113999146', 'Permohonan sinergi', 'Semoga bisa bersinergi', '1788151431_IMG_5477.jpeg', '2026-08-31 11:43:51', '182.2.235.195', 'baru', 0);
 
 -- --------------------------------------------------------
 
@@ -850,7 +852,7 @@ ALTER TABLE `slider`
 -- AUTO_INCREMENT untuk tabel `surat_masuk`
 --
 ALTER TABLE `surat_masuk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
