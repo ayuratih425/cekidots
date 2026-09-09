@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/dism4551/public_html/cekidot.dispar.my.id
+    - /bin/cp -R . $DEPLOYPATH
