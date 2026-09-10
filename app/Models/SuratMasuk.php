@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class SuratMasuk extends Model
 {
     protected $table = 'surat_masuk';
+    public $timestamps = false;
 
     protected $fillable = [
         'nama_pengirim', 'email', 'no_hp', 'instansi',
