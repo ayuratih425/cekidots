@@ -2453,6 +2453,7 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('infografis', file);
             formData.append('ajax_upload_infografis', 1);
             formData.append('kategori', kategoriAktif);
+            formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
             
             fetch('{{ route('admin.iku.upload.infografis') }}', {
                 method: 'POST',
