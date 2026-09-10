@@ -217,10 +217,13 @@ class CapaianController extends Controller
 
                 $item = CapaianProgram::find($id);
                 if ($item && $item->file_sumber) {
-                    Storage::disk('public')->delete('uploads/capaian/'.$item->file_sumber);
+                    $oldPath = public_path('storage/uploads/capaian/'.$item->file_sumber);
+                    if (file_exists($oldPath)) unlink($oldPath);
                 }
                 $file_name = 'sumber_'.$id.'_'.time().'.'.$ext;
-                $file->storeAs('uploads/capaian', $file_name, 'public');
+                $dest = public_path('storage/uploads/capaian');
+                if (!file_exists($dest)) mkdir($dest, 0755, true);
+                $file->move($dest, $file_name);
                 CapaianProgram::where('id', $id)->update(['file_sumber' => $file_name]);
             }
         }
@@ -236,7 +239,8 @@ class CapaianController extends Controller
         $data = CapaianProgram::where('tahun', $tahun_aktif)->get();
         foreach ($data as $item) {
             if ($item->file_sumber) {
-                Storage::disk('public')->delete('uploads/capaian/' . $item->file_sumber);
+                $path = public_path('storage/uploads/capaian/'.$item->file_sumber);
+                if (file_exists($path)) unlink($path);
             }
             $item->update([
                 'target' => 0,
@@ -258,7 +262,8 @@ class CapaianController extends Controller
         
         $item = CapaianProgram::where('id', $id)->where('tahun', $tahun_aktif)->first();
         if ($item && $item->file_sumber) {
-            Storage::disk('public')->delete('uploads/capaian/' . $item->file_sumber);
+            $path = public_path('storage/uploads/capaian/'.$item->file_sumber);
+            if (file_exists($path)) unlink($path);
             $item->update(['file_sumber' => null]);
         }
         
