@@ -26,10 +26,12 @@ class DokumenAkipController extends Controller
     private function uploadFile($file, string $folder): array
     {
         $name = time().'_'.preg_replace('/[^a-zA-Z0-9._-]/', '', $file->getClientOriginalName());
+        $type = $file->getClientOriginalExtension();
+        $size = $file->getSize();
         $dest = public_path('storage/uploads/'.$folder);
         if (!file_exists($dest)) mkdir($dest, 0755, true);
         $file->move($dest, $name);
-        return ['name' => $name, 'type' => $file->getClientOriginalExtension(), 'size' => $file->getSize()];
+        return ['name' => $name, 'type' => $type, 'size' => $size];
     }
 
     private function deleteFile(?string $name, string $folder): void
