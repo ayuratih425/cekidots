@@ -89,7 +89,7 @@ class IkuPublicController extends Controller
 
         $infografis        = IkuInfografis::where('kategori', $kategori)->first();
         $infografis_file   = $infografis?->file_name ?? '';
-        $infografis_exists = $infografis && !empty($infografis->file_name) && Storage::disk('public')->exists('uploads/iku/'.$kategori.'/'.$infografis->file_name);
+        $infografis_exists = $infografis && !empty($infografis->file_name) && file_exists(public_path('storage/uploads/iku/'.$kategori.'/'.$infografis->file_name));
 
         $sumber      = IkuPenilaian::where('kategori', $kategori)->where('nama_kriteria', 'Sumber Data')->first();
         $sumber_data = $sumber ? $sumber->toArray() : ['link_sumber' => '', 'file_sumber' => ''];

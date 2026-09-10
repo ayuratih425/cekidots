@@ -216,7 +216,7 @@ class IkuController extends Controller
         // Infografis
         $infografis = IkuInfografis::where('kategori', $kategori_aktif)->first();
         $infografis_file = $infografis ? $infografis->file_name : '';
-        $infografis_exists = $infografis && ! empty($infografis->file_name) && Storage::disk('public')->exists('uploads/iku/'.$kategori_aktif.'/'.$infografis->file_name);
+        $infografis_exists = $infografis && ! empty($infografis->file_name) && file_exists(public_path('storage/uploads/iku/'.$kategori_aktif.'/'.$infografis->file_name));
         $infografis_path = $infografis_exists ? storage_path('app/public/uploads/iku/'.$kategori_aktif.'/'.$infografis_file) : '';
 
         // Sumber data
