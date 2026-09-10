@@ -80,7 +80,7 @@
 
     <div class="title">
         <h2>Laporan Arsip Surat</h2>
-        <p>Bidang: {{ $bidangNama }}</p>
+        <p>Bidang: {{ $divisiNama }}</p>
     </div>
 
     <div class="meta">
