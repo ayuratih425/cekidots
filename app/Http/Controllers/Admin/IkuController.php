@@ -214,7 +214,7 @@ class IkuController extends Controller
         }
 
         // Infografis
-        $infografis = IkuInfografis::where('kategori', $kategori_aktif)->first();
+        $infografis = IkuInfografis::where('kategori', $kategori_aktif)->where('tahun', $tahun_aktif)->first();
         $infografis_file = $infografis ? $infografis->file_name : '';
         $infografis_exists = $infografis && ! empty($infografis->file_name) && file_exists(public_path('storage/uploads/iku/'.$kategori_aktif.'/'.$infografis->file_name));
         $infografis_path = $infografis_exists ? storage_path('app/public/uploads/iku/'.$kategori_aktif.'/'.$infografis_file) : '';
@@ -549,7 +549,7 @@ class IkuController extends Controller
             $ext = $file->getClientOriginalExtension();
 
             if (in_array($ext, $allowed) && $file->getSize() <= 5 * 1024 * 1024) {
-                $existing = IkuInfografis::where('kategori', $kategori)->first();
+                $existing = IkuInfografis::where('kategori', $kategori)->where('tahun', $request->tahun ?? '2025')->first();
                 $destDir = public_path('storage/uploads/iku/'.$kategori);
                 if (!file_exists($destDir)) {
                     mkdir($destDir, 0755, true);
@@ -566,7 +566,7 @@ class IkuController extends Controller
                 }
 
                 IkuInfografis::updateOrCreate(
-                    ['kategori' => $kategori],
+                    ['kategori' => $kategori, 'tahun' => $request->tahun ?? '2025'],
                     ['file_name' => $file_name]
                 );
 

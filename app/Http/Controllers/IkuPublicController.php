@@ -87,7 +87,7 @@ class IkuPublicController extends Controller
             }
         }
 
-        $infografis        = IkuInfografis::where('kategori', $kategori)->first();
+        $infografis        = IkuInfografis::where('kategori', $kategori)->where('tahun', $tahun)->first();
         $infografis_file   = $infografis?->file_name ?? '';
         $infografis_exists = $infografis && !empty($infografis->file_name) && file_exists(public_path('storage/uploads/iku/'.$kategori.'/'.$infografis->file_name));
 
