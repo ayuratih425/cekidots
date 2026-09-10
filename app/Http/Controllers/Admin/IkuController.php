@@ -549,6 +549,7 @@ class IkuController extends Controller
             $ext = $file->getClientOriginalExtension();
 
             if (in_array($ext, $allowed) && $file->getSize() <= 5 * 1024 * 1024) {
+                $existing = IkuInfografis::where('kategori', $kategori)->first();
                 $destDir = public_path('storage/uploads/iku/'.$kategori);
                 if (!file_exists($destDir)) {
                     mkdir($destDir, 0755, true);
