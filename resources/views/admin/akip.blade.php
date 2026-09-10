@@ -975,7 +975,7 @@
 
 <!-- Upload Form -->
 <div class="upload-form">
-    <form method="post" enctype="multipart/form-data" id="uploadForm">
+    <form method="post" enctype="multipart/form-data" id="uploadForm" action="{{ route('admin.akip.store') }}">
         @csrf
         <input type="hidden" name="action" value="upload">
         
