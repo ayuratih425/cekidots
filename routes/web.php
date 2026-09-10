@@ -123,7 +123,7 @@ Route::prefix('admin')->middleware(['role:super_admin,admin_divisi,admin_bidang'
     Route::get('/iku', [IkuController::class, 'index'])->name('admin.iku.index');
     Route::post('/iku', [IkuController::class, 'update'])->name('admin.iku.update');
     Route::post('/iku/upload-infografis', [IkuController::class, 'uploadInfografis'])->name('admin.iku.upload.infografis');
-    Route::post('/iku/delete-infografis', [IkuController::class, 'deleteInfografis'])->name('admin.iku.delete.infografis');
+    Route::get('/iku/delete-infografis', [IkuController::class, 'deleteInfografis'])->name('admin.iku.delete.infografis');
     Route::post('/iku/delete-file', [IkuController::class, 'deleteFile'])->name('admin.iku.delete.file');
 
     // Folder Dokumen

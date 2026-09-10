@@ -588,9 +588,11 @@ class IkuController extends Controller
 
         $kategori = $request->kategori ?? 'Makan Minum';
 
-        $infografis = IkuInfografis::where('kategori', $kategori)->first();
+        $tahun = $request->tahun ?? '2025';
+        $infografis = IkuInfografis::where('kategori', $kategori)->where('tahun', $tahun)->first();
         if ($infografis && $infografis->file_name) {
-            Storage::disk('public')->delete('uploads/iku/'.$kategori.'/'.$infografis->file_name);
+            $path = public_path('storage/uploads/iku/'.$kategori.'/'.$infografis->file_name);
+            if (file_exists($path)) unlink($path);
             $infografis->delete();
         }
 
