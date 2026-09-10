@@ -559,7 +559,10 @@ class IkuController extends Controller
                     Storage::disk('public')->delete('uploads/iku/'.$kategori.'/'.$existing->file_name);
                 }
                 $file_name = 'infografis_'.$kategori.'_'.time().'.'.$ext;
-                $file->move($destDir, $file_name);
+                $moved = $file->move($destDir, $file_name);
+                if (!$moved) {
+                    return response()->json(['success' => false, 'message' => 'Gagal memindahkan file ke: '.$destDir]);
+                }
 
                 IkuInfografis::updateOrCreate(
                     ['kategori' => $kategori],
