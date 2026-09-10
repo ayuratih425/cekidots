@@ -82,7 +82,7 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::get('/akip', [DokumenAkipController::class, 'index'])->name('admin.akip.index');
     Route::post('/akip/upload', [DokumenAkipController::class, 'store'])->name('admin.akip.store');
     Route::post('/akip/edit', [DokumenAkipController::class, 'update'])->name('admin.akip.update');
-    Route::post('/akip/delete/{id}', [DokumenAkipController::class, 'destroy'])->name('admin.akip.destroy');
+    Route::get('/akip/delete/{id}', [DokumenAkipController::class, 'destroy'])->name('admin.akip.destroy');
     Route::post('/akip/toggle/{id}', [DokumenAkipController::class, 'toggleStatus'])->name('admin.akip.toggle');
 
     // Capaian Program
@@ -116,7 +116,7 @@ Route::prefix('admin')->middleware(['role:super_admin,admin_divisi,admin_bidang'
     Route::get('/iki', [DokumenIkiController::class, 'index'])->name('admin.iki.index');
     Route::post('/iki/upload', [DokumenIkiController::class, 'store'])->name('admin.iki.store');
     Route::post('/iki/edit', [DokumenIkiController::class, 'update'])->name('admin.iki.update');
-    Route::post('/iki/delete/{id}', [DokumenIkiController::class, 'destroy'])->name('admin.iki.destroy');
+    Route::get('/iki/delete/{id}', [DokumenIkiController::class, 'destroy'])->name('admin.iki.destroy');
     Route::post('/iki/toggle/{id}', [DokumenIkiController::class, 'toggleStatus'])->name('admin.iki.toggle');
 
     // IKU
