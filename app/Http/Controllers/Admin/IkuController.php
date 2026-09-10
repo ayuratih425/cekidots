@@ -550,11 +550,17 @@ class IkuController extends Controller
 
             if (in_array($ext, $allowed) && $file->getSize() <= 5 * 1024 * 1024) {
                 $existing = IkuInfografis::where('kategori', $kategori)->first();
+                $destDir = public_path('storage/uploads/iku/'.$kategori);
+                if (!file_exists($destDir)) {
+                    mkdir($destDir, 0755, true);
+                }
                 if ($existing && $existing->file_name) {
+                    $oldPath = public_path('storage/uploads/iku/'.$kategori.'/'.$existing->file_name);
+                    if (file_exists($oldPath)) unlink($oldPath);
                     Storage::disk('public')->delete('uploads/iku/'.$kategori.'/'.$existing->file_name);
                 }
                 $file_name = 'infografis_'.$kategori.'_'.time().'.'.$ext;
-                $file->storeAs('uploads/iku/'.$kategori, $file_name, 'public');
+                $file->move($destDir, $file_name);
 
                 IkuInfografis::updateOrCreate(
                     ['kategori' => $kategori],
@@ -564,7 +570,7 @@ class IkuController extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => 'Infografis berhasil diupload!',
-                    'file_path' => Storage::disk('public')->url('uploads/iku/'.$kategori.'/'.$file_name),
+                    'file_path' => asset('storage/uploads/iku/'.$kategori.'/'.$file_name),
                     'file_name' => $file_name,
                 ]);
             }
