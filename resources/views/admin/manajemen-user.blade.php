@@ -183,9 +183,12 @@
                                 <button class="btn btn-sm btn-warning" onclick="editUser({{ $u->id }}, '{{ addslashes($u->nama_admin) }}', '{{ $u->username }}', '{{ $u->email }}', '{{ $u->divisi }}', '{{ $u->role }}')">
                                     <i class="fas fa-edit"></i> Edit
                                 </button>
-                                <a href="{{ route('admin.users.destroy', $u->id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Hapus user {{ $u->nama_admin }}?')">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+                                <form action="{{ route('admin.users.destroy', $u->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Hapus user {{ $u->nama_admin }}?')">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>
